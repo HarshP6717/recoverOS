@@ -1,0 +1,46 @@
+{
+  "policy_name": "RecoverOS ML Policy (Expected Value + Guardrails)",
+  "n_cases": 1000,
+  "recovered_count": 705,
+  "recovery_rate": 0.705,
+  "total_recovered_amount": 843254.58,
+  "total_action_cost": 1939.0,
+  "total_net_value": 841315.58,
+  "avg_net_value_per_case": 841.31558,
+  "stop_count": 0,
+  "stop_rate": 0.0,
+  "action_distribution": {
+    "retry_later": 605,
+    "payment_method_update": 172,
+    "recovery_link": 200,
+    "escalate_human": 23
+  },
+  "action_recovery_breakdown": {
+    "escalate_human": {
+      "count": 23,
+      "recovered": 15,
+      "recovery_rate": 0.652174,
+      "total_net_value": 24715.69
+    },
+    "payment_method_update": {
+      "count": 172,
+      "recovered": 107,
+      "recovery_rate": 0.622093,
+      "total_net_value": 109078.58
+    },
+    "recovery_link": {
+      "count": 200,
+      "recovered": 143,
+      "recovery_rate": 0.715,
+      "total_net_value": 178423.22
+    },
+    "retry_later": {
+      "count": 605,
+      "recovered": 440,
+      "recovery_rate": 0.727273,
+      "total_net_value": 529098.09
+    }
+  },
+  "avg_predicted_erv": 815.023659,
+  "guardrails_triggered_total": 189
+}

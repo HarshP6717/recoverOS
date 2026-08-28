@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-08-28T07:34:45Z",
+  "recoveros_vs_baseline": {
+    "comparator_label": "Deterministic Baseline",
+    "recoveros_label": "RecoverOS",
+    "n_cases": 1000,
+    "mean_delta_net_value": 379.2984,
+    "median_delta_net_value": 0.0,
+    "std_delta_net_value": 1122.515944,
+    "percentiles": {
+      "p5": -1.5,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 240.5025,
+      "p95": 1541.233
+    },
+    "RecoverOS_wins": 318,
+    "Deterministic Baseline_wins": 235,
+    "ties": 447
+  },
+  "recoveros_vs_heuristic": {
+    "comparator_label": "Strong Feature-Aware Heuristic",
+    "recoveros_label": "RecoverOS",
+    "n_cases": 1000,
+    "mean_delta_net_value": 1.29586,
+    "median_delta_net_value": 0.0,
+    "std_delta_net_value": 58.127421,
+    "percentiles": {
+      "p5": -1.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p95": 0.5
+    },
+    "RecoverOS_wins": 53,
+    "Strong Feature-Aware Heuristic_wins": 105,
+    "ties": 842
+  }
+}

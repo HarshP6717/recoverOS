@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-08-28T07:34:45Z",
+  "n_bootstraps": 1000,
+  "bootstrap_seed": 0,
+  "recoveros_vs_baseline": {
+    "comparator_label": "Deterministic Baseline",
+    "recoveros_label": "RecoverOS ML Policy",
+    "n_bootstraps": 1000,
+    "bootstrap_seed": 0,
+    "point_estimate_total_net_value_diff": 379298.4,
+    "point_estimate_recovery_rate_diff": 0.297,
+    "bootstrap_ci_95_total_net_value": [
+      318247.9125,
+      446393.626
+    ],
+    "bootstrap_ci_95_recovery_rate": [
+      0.268975,
+      0.327
+    ],
+    "ci_crosses_zero_net_value": false,
+    "ci_crosses_zero_recovery_rate": false,
+    "bootstrap_mean_diff_net_value": 379415.2318,
+    "bootstrap_std_diff_net_value": 34077.6468
+  },
+  "recoveros_vs_heuristic": {
+    "comparator_label": "Strong Feature-Aware Heuristic",
+    "recoveros_label": "RecoverOS ML Policy",
+    "n_bootstraps": 1000,
+    "bootstrap_seed": 0,
+    "point_estimate_total_net_value_diff": 1295.86,
+    "point_estimate_recovery_rate_diff": 0.004,
+    "bootstrap_ci_95_total_net_value": [
+      -2252.913,
+      4964.2892
+    ],
+    "bootstrap_ci_95_recovery_rate": [
+      -0.001,
+      0.009
+    ],
+    "ci_crosses_zero_net_value": true,
+    "ci_crosses_zero_recovery_rate": true,
+    "bootstrap_mean_diff_net_value": 1325.6644,
+    "bootstrap_std_diff_net_value": 1770.6564
+  }
+}

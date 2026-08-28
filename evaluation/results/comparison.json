@@ -1,0 +1,84 @@
+{
+  "n_cases": 1000,
+  "baseline_policy_name": "Deterministic Baseline",
+  "recoveros_policy_name": "RecoverOS ML Policy (Expected Value + Guardrails)",
+  "absolute_difference": {
+    "recovery_rate": 0.297,
+    "total_recovered_amount": 380256.9,
+    "total_action_cost": 958.5,
+    "total_net_value": 379298.4,
+    "avg_net_value_per_case": 379.2984,
+    "stop_rate": -0.071,
+    "recovered_count": 297.0,
+    "stop_count": -71.0
+  },
+  "relative_uplift_pct": {
+    "recovery_rate": 72.7941,
+    "total_recovered_amount": 82.1293,
+    "total_action_cost": 97.7562,
+    "total_net_value": 82.0962,
+    "avg_net_value_per_case": 82.0962,
+    "stop_rate": -100.0,
+    "recovered_count": 72.7941,
+    "stop_count": -100.0
+  },
+  "action_distribution_shift": {
+    "escalate_human": {
+      "baseline_count": 0,
+      "recoveros_count": 23,
+      "count_diff": 23,
+      "baseline_pct": 0.0,
+      "recoveros_pct": 2.3,
+      "pct_point_diff": 2.3
+    },
+    "payment_method_update": {
+      "baseline_count": 88,
+      "recoveros_count": 172,
+      "count_diff": 84,
+      "baseline_pct": 8.8,
+      "recoveros_pct": 17.2,
+      "pct_point_diff": 8.4
+    },
+    "recovery_link": {
+      "baseline_count": 44,
+      "recoveros_count": 200,
+      "count_diff": 156,
+      "baseline_pct": 4.4,
+      "recoveros_pct": 20.0,
+      "pct_point_diff": 15.6
+    },
+    "retry_later": {
+      "baseline_count": 221,
+      "recoveros_count": 605,
+      "count_diff": 384,
+      "baseline_pct": 22.1,
+      "recoveros_pct": 60.5,
+      "pct_point_diff": 38.4
+    },
+    "retry_now": {
+      "baseline_count": 459,
+      "recoveros_count": 0,
+      "count_diff": -459,
+      "baseline_pct": 45.9,
+      "recoveros_pct": 0.0,
+      "pct_point_diff": -45.9
+    },
+    "send_reminder": {
+      "baseline_count": 117,
+      "recoveros_count": 0,
+      "count_diff": -117,
+      "baseline_pct": 11.7,
+      "recoveros_pct": 0.0,
+      "pct_point_diff": -11.7
+    },
+    "stop": {
+      "baseline_count": 71,
+      "recoveros_count": 0,
+      "count_diff": -71,
+      "baseline_pct": 7.1,
+      "recoveros_pct": 0.0,
+      "pct_point_diff": -7.1
+    }
+  },
+  "verdict": "RecoverOS exceeds baseline on total net value (actual simulation)."
+}

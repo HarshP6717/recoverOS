@@ -1,0 +1,779 @@
+{
+  "generated_at": "2026-08-28T08:21:10Z",
+  "max_horizon_rounds": 3,
+  "n_cases": 1000,
+  "baseline_metrics": {
+    "policy_name": "Deterministic Baseline",
+    "n_cases": 1000,
+    "recovered_count": 656,
+    "recovery_rate": 0.656,
+    "total_recovered_amount": 756184.1,
+    "total_action_cost": 1437.5,
+    "total_net_value": 754746.6,
+    "avg_net_value_per_case": 754.7466,
+    "round_progression": {
+      "round_1": {
+        "recovered_in_round": 408,
+        "cumulative_recovered": 408,
+        "cumulative_recovery_rate": 0.408,
+        "round_net_value": 462017.18,
+        "cumulative_net_value": 462017.18
+      },
+      "round_2": {
+        "recovered_in_round": 203,
+        "cumulative_recovered": 611,
+        "cumulative_recovery_rate": 0.611,
+        "round_net_value": 233947.91,
+        "cumulative_net_value": 695965.09
+      },
+      "round_3": {
+        "recovered_in_round": 45,
+        "cumulative_recovered": 656,
+        "cumulative_recovery_rate": 0.656,
+        "round_net_value": 58781.51,
+        "cumulative_net_value": 754746.6
+      }
+    },
+    "total_actions_executed": 1748,
+    "avg_actions_per_case": 1.748,
+    "avg_actions_per_recovered_case": 1.4466,
+    "cost_per_recovered_case": 2.1913,
+    "unrecovered_cases": 344,
+    "stop_rate": 0.245,
+    "escalation_rate": 0.0,
+    "termination_breakdown": {
+      "MAX_ROUNDS_REACHED": {
+        "count": 99,
+        "pct": 9.9
+      },
+      "RECOVERED": {
+        "count": 656,
+        "pct": 65.6
+      },
+      "STOP_ACTION": {
+        "count": 245,
+        "pct": 24.5
+      }
+    },
+    "action_distribution_by_round": {
+      "round_1": {
+        "retry_now": 459,
+        "retry_later": 221,
+        "send_reminder": 117,
+        "payment_method_update": 88,
+        "recovery_link": 44,
+        "stop": 71
+      },
+      "round_2": {
+        "retry_later": 308,
+        "send_reminder": 106,
+        "recovery_link": 16,
+        "stop": 91
+      },
+      "round_3": {
+        "send_reminder": 144,
+        "stop": 83
+      }
+    },
+    "top_pathways": {
+      "retry_now -> retry_later": {
+        "count": 167,
+        "pct": 16.7
+      },
+      "retry_now": {
+        "count": 151,
+        "pct": 15.1
+      },
+      "retry_now -> retry_later -> send_reminder": {
+        "count": 141,
+        "pct": 14.1
+      },
+      "retry_later": {
+        "count": 130,
+        "pct": 13.0
+      },
+      "send_reminder -> stop": {
+        "count": 91,
+        "pct": 9.1
+      },
+      "payment_method_update": {
+        "count": 72,
+        "pct": 7.2
+      },
+      "stop": {
+        "count": 71,
+        "pct": 7.1
+      },
+      "retry_later -> send_reminder -> stop": {
+        "count": 68,
+        "pct": 6.8
+      },
+      "recovery_link": {
+        "count": 29,
+        "pct": 2.9
+      },
+      "send_reminder": {
+        "count": 26,
+        "pct": 2.6
+      },
+      "retry_later -> send_reminder": {
+        "count": 23,
+        "pct": 2.3
+      },
+      "recovery_link -> send_reminder -> stop": {
+        "count": 15,
+        "pct": 1.5
+      },
+      "payment_method_update -> recovery_link": {
+        "count": 13,
+        "pct": 1.3
+      },
+      "payment_method_update -> recovery_link -> send_reminder": {
+        "count": 3,
+        "pct": 0.3
+      }
+    }
+  },
+  "heuristic_metrics": {
+    "policy_name": "Strong Feature-Aware Heuristic",
+    "n_cases": 1000,
+    "recovered_count": 870,
+    "recovery_rate": 0.87,
+    "total_recovered_amount": 1025955.04,
+    "total_action_cost": 2207.5,
+    "total_net_value": 1023747.54,
+    "avg_net_value_per_case": 1023.7475,
+    "round_progression": {
+      "round_1": {
+        "recovered_in_round": 701,
+        "cumulative_recovered": 701,
+        "cumulative_recovery_rate": 0.701,
+        "round_net_value": 840019.72,
+        "cumulative_net_value": 840019.72
+      },
+      "round_2": {
+        "recovered_in_round": 142,
+        "cumulative_recovered": 843,
+        "cumulative_recovery_rate": 0.843,
+        "round_net_value": 159718.21,
+        "cumulative_net_value": 999737.93
+      },
+      "round_3": {
+        "recovered_in_round": 27,
+        "cumulative_recovered": 870,
+        "cumulative_recovery_rate": 0.87,
+        "round_net_value": 24009.61,
+        "cumulative_net_value": 1023747.54
+      }
+    },
+    "total_actions_executed": 1450,
+    "avg_actions_per_case": 1.45,
+    "avg_actions_per_recovered_case": 1.2253,
+    "cost_per_recovered_case": 2.5374,
+    "unrecovered_cases": 130,
+    "stop_rate": 0.0,
+    "escalation_rate": 0.003,
+    "termination_breakdown": {
+      "ESCALATE_ACTION": {
+        "count": 3,
+        "pct": 0.3
+      },
+      "MAX_ROUNDS_REACHED": {
+        "count": 127,
+        "pct": 12.7
+      },
+      "RECOVERED": {
+        "count": 870,
+        "pct": 87.0
+      }
+    },
+    "action_distribution_by_round": {
+      "round_1": {
+        "retry_later": 613,
+        "send_reminder": 64,
+        "payment_method_update": 167,
+        "recovery_link": 137,
+        "escalate_human": 19
+      },
+      "round_2": {
+        "retry_now": 6,
+        "retry_later": 134,
+        "send_reminder": 79,
+        "payment_method_update": 37,
+        "recovery_link": 40
+      },
+      "round_3": {
+        "retry_now": 6,
+        "retry_later": 21,
+        "send_reminder": 85,
+        "payment_method_update": 14,
+        "recovery_link": 28
+      }
+    },
+    "top_pathways": {
+      "retry_later": {
+        "count": 448,
+        "pct": 44.8
+      },
+      "payment_method_update": {
+        "count": 125,
+        "pct": 12.5
+      },
+      "recovery_link": {
+        "count": 105,
+        "pct": 10.5
+      },
+      "retry_later -> retry_later": {
+        "count": 92,
+        "pct": 9.2
+      },
+      "send_reminder -> send_reminder -> send_reminder": {
+        "count": 55,
+        "pct": 5.5
+      },
+      "payment_method_update -> payment_method_update": {
+        "count": 22,
+        "pct": 2.2
+      },
+      "retry_later -> retry_later -> retry_later": {
+        "count": 21,
+        "pct": 2.1
+      },
+      "escalate_human": {
+        "count": 19,
+        "pct": 1.9
+      },
+      "recovery_link -> send_reminder -> send_reminder": {
+        "count": 14,
+        "pct": 1.4
+      },
+      "retry_later -> recovery_link -> recovery_link": {
+        "count": 11,
+        "pct": 1.1
+      },
+      "retry_later -> retry_later -> payment_method_update": {
+        "count": 9,
+        "pct": 0.9
+      },
+      "recovery_link -> recovery_link": {
+        "count": 9,
+        "pct": 0.9
+      },
+      "send_reminder": {
+        "count": 7,
+        "pct": 0.7
+      },
+      "retry_later -> retry_later -> recovery_link": {
+        "count": 7,
+        "pct": 0.7
+      },
+      "payment_method_update -> payment_method_update -> recovery_link": {
+        "count": 6,
+        "pct": 0.6
+      }
+    }
+  },
+  "recoveros_metrics": {
+    "policy_name": "RecoverOS ML Policy",
+    "n_cases": 1000,
+    "recovered_count": 908,
+    "recovery_rate": 0.908,
+    "total_recovered_amount": 1065354.54,
+    "total_action_cost": 2499.5,
+    "total_net_value": 1062855.04,
+    "avg_net_value_per_case": 1062.855,
+    "round_progression": {
+      "round_1": {
+        "recovered_in_round": 705,
+        "cumulative_recovered": 705,
+        "cumulative_recovery_rate": 0.705,
+        "round_net_value": 841315.58,
+        "cumulative_net_value": 841315.58
+      },
+      "round_2": {
+        "recovered_in_round": 159,
+        "cumulative_recovered": 864,
+        "cumulative_recovery_rate": 0.864,
+        "round_net_value": 172709.02,
+        "cumulative_net_value": 1014024.6
+      },
+      "round_3": {
+        "recovered_in_round": 44,
+        "cumulative_recovered": 908,
+        "cumulative_recovery_rate": 0.908,
+        "round_net_value": 48830.44,
+        "cumulative_net_value": 1062855.04
+      }
+    },
+    "total_actions_executed": 1415,
+    "avg_actions_per_case": 1.415,
+    "avg_actions_per_recovered_case": 1.272,
+    "cost_per_recovered_case": 2.7528,
+    "unrecovered_cases": 92,
+    "stop_rate": 0.0,
+    "escalation_rate": 0.008,
+    "termination_breakdown": {
+      "ESCALATE_ACTION": {
+        "count": 8,
+        "pct": 0.8
+      },
+      "MAX_ROUNDS_REACHED": {
+        "count": 84,
+        "pct": 8.4
+      },
+      "RECOVERED": {
+        "count": 908,
+        "pct": 90.8
+      }
+    },
+    "action_distribution_by_round": {
+      "round_1": {
+        "retry_later": 605,
+        "payment_method_update": 172,
+        "recovery_link": 200,
+        "escalate_human": 23
+      },
+      "round_2": {
+        "retry_later": 165,
+        "payment_method_update": 65,
+        "recovery_link": 57
+      },
+      "round_3": {
+        "retry_later": 59,
+        "payment_method_update": 35,
+        "recovery_link": 34
+      }
+    },
+    "top_pathways": {
+      "retry_later": {
+        "count": 440,
+        "pct": 44.0
+      },
+      "recovery_link": {
+        "count": 143,
+        "pct": 14.3
+      },
+      "payment_method_update": {
+        "count": 107,
+        "pct": 10.7
+      },
+      "retry_later -> retry_later": {
+        "count": 106,
+        "pct": 10.6
+      },
+      "retry_later -> retry_later -> retry_later": {
+        "count": 59,
+        "pct": 5.9
+      },
+      "payment_method_update -> payment_method_update -> payment_method_update": {
+        "count": 35,
+        "pct": 3.5
+      },
+      "recovery_link -> recovery_link -> recovery_link": {
+        "count": 34,
+        "pct": 3.4
+      },
+      "payment_method_update -> payment_method_update": {
+        "count": 30,
+        "pct": 3.0
+      },
+      "escalate_human": {
+        "count": 23,
+        "pct": 2.3
+      },
+      "recovery_link -> recovery_link": {
+        "count": 23,
+        "pct": 2.3
+      }
+    }
+  },
+  "comparisons": {
+    "recoveros_vs_baseline": {
+      "comparator": "Baseline",
+      "recoveros": "RecoverOS",
+      "point_estimate_net_value_diff": 308108.44,
+      "point_estimate_recovery_rate_diff": 0.252,
+      "bootstrap_ci_95_net_value": [
+        250106.4085,
+        366979.241
+      ],
+      "bootstrap_ci_95_recovery_rate": [
+        0.226,
+        0.281
+      ],
+      "ci_crosses_zero_net_value": false,
+      "ci_crosses_zero_recovery_rate": false,
+      "paired_wins": {
+        "RecoverOS_wins": 409,
+        "Baseline_wins": 208,
+        "ties": 383
+      }
+    },
+    "recoveros_vs_heuristic": {
+      "comparator": "Heuristic",
+      "recoveros": "RecoverOS",
+      "point_estimate_net_value_diff": 39107.5,
+      "point_estimate_recovery_rate_diff": 0.038,
+      "bootstrap_ci_95_net_value": [
+        17077.5802,
+        70181.4472
+      ],
+      "bootstrap_ci_95_recovery_rate": [
+        0.026,
+        0.052
+      ],
+      "ci_crosses_zero_net_value": false,
+      "ci_crosses_zero_recovery_rate": false,
+      "paired_wins": {
+        "RecoverOS_wins": 114,
+        "Heuristic_wins": 116,
+        "ties": 770
+      }
+    },
+    "heuristic_vs_baseline": {
+      "comparator": "Baseline",
+      "recoveros": "Heuristic",
+      "point_estimate_net_value_diff": 269000.94,
+      "point_estimate_recovery_rate_diff": 0.214,
+      "bootstrap_ci_95_net_value": [
+        214191.2643,
+        325721.1728
+      ],
+      "bootstrap_ci_95_recovery_rate": [
+        0.189975,
+        0.239
+      ],
+      "ci_crosses_zero_net_value": false,
+      "ci_crosses_zero_recovery_rate": false,
+      "paired_wins": {
+        "Heuristic_wins": 350,
+        "Baseline_wins": 245,
+        "ties": 405
+      }
+    }
+  },
+  "round_progression_comparison": {
+    "round_1": {
+      "cumulative_recovery_rate": {
+        "baseline": 0.408,
+        "heuristic": 0.701,
+        "recoveros": 0.705
+      },
+      "cumulative_net_value": {
+        "baseline": 462017.18,
+        "heuristic": 840019.72,
+        "recoveros": 841315.58
+      },
+      "delta_recoveros_minus_heuristic": 1295.86,
+      "delta_recoveros_minus_baseline": 379298.4
+    },
+    "round_2": {
+      "cumulative_recovery_rate": {
+        "baseline": 0.611,
+        "heuristic": 0.843,
+        "recoveros": 0.864
+      },
+      "cumulative_net_value": {
+        "baseline": 695965.09,
+        "heuristic": 999737.93,
+        "recoveros": 1014024.6
+      },
+      "delta_recoveros_minus_heuristic": 14286.67,
+      "delta_recoveros_minus_baseline": 318059.51
+    },
+    "round_3": {
+      "cumulative_recovery_rate": {
+        "baseline": 0.656,
+        "heuristic": 0.87,
+        "recoveros": 0.908
+      },
+      "cumulative_net_value": {
+        "baseline": 754746.6,
+        "heuristic": 1023747.54,
+        "recoveros": 1062855.04
+      },
+      "delta_recoveros_minus_heuristic": 39107.5,
+      "delta_recoveros_minus_baseline": 308108.44
+    }
+  },
+  "cohort_results": {
+    "insufficient_funds": {
+      "n_cases": 295,
+      "baseline_net_value": 259626.3,
+      "baseline_recovery_rate": 0.722034,
+      "heuristic_net_value": 325339.93,
+      "heuristic_recovery_rate": 0.881356,
+      "recoveros_net_value": 343292.2,
+      "recoveros_recovery_rate": 0.918644,
+      "diff_recoveros_minus_heuristic": 17952.27,
+      "bootstrap_ci_95": [
+        4096.2855,
+        40954.2687
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 27,
+        "Heuristic_wins": 10,
+        "ties": 258
+      }
+    },
+    "hard_failures": {
+      "n_cases": 189,
+      "baseline_net_value": 139946.19,
+      "baseline_recovery_rate": 0.619048,
+      "heuristic_net_value": 183526.9,
+      "heuristic_recovery_rate": 0.804233,
+      "recoveros_net_value": 195332.19,
+      "recoveros_recovery_rate": 0.867725,
+      "diff_recoveros_minus_heuristic": 11805.29,
+      "bootstrap_ci_95": [
+        2330.3225,
+        28135.1565
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 46,
+        "Heuristic_wins": 41,
+        "ties": 102
+      }
+    },
+    "bank_timeout": {
+      "n_cases": 196,
+      "baseline_net_value": 158331.86,
+      "baseline_recovery_rate": 0.80102,
+      "heuristic_net_value": 208323.58,
+      "heuristic_recovery_rate": 0.959184,
+      "recoveros_net_value": 212967.0,
+      "recoveros_recovery_rate": 0.979592,
+      "diff_recoveros_minus_heuristic": 4643.42,
+      "bootstrap_ci_95": [
+        540.05,
+        9815.3883
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 4,
+        "Heuristic_wins": 1,
+        "ties": 191
+      }
+    },
+    "customer_abandoned": {
+      "n_cases": 133,
+      "baseline_net_value": 68342.05,
+      "baseline_recovery_rate": 0.43609,
+      "heuristic_net_value": 144858.87,
+      "heuristic_recovery_rate": 0.924812,
+      "recoveros_net_value": 149610.13,
+      "recoveros_recovery_rate": 0.962406,
+      "diff_recoveros_minus_heuristic": 4751.26,
+      "bootstrap_ci_95": [
+        422.0325,
+        10257.0477
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 5,
+        "Heuristic_wins": 15,
+        "ties": 113
+      }
+    },
+    "attempt_gte_3": {
+      "n_cases": 188,
+      "baseline_net_value": 38377.77,
+      "baseline_recovery_rate": 0.138298,
+      "heuristic_net_value": 130225.98,
+      "heuristic_recovery_rate": 0.505319,
+      "recoveros_net_value": 159411.18,
+      "recoveros_recovery_rate": 0.68617,
+      "diff_recoveros_minus_heuristic": 29185.2,
+      "bootstrap_ci_95": [
+        17300.7868,
+        44167.3225
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 54,
+        "Heuristic_wins": 72,
+        "ties": 62
+      }
+    },
+    "contact_fatigued_gte_4": {
+      "n_cases": 138,
+      "baseline_net_value": 22550.41,
+      "baseline_recovery_rate": 0.094203,
+      "heuristic_net_value": 76662.71,
+      "heuristic_recovery_rate": 0.413043,
+      "recoveros_net_value": 102298.02,
+      "recoveros_recovery_rate": 0.630435,
+      "diff_recoveros_minus_heuristic": 25635.31,
+      "bootstrap_ci_95": [
+        14545.9255,
+        39667.7472
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 43,
+        "Heuristic_wins": 58,
+        "ties": 37
+      }
+    },
+    "high_amount_gte_1500": {
+      "n_cases": 250,
+      "baseline_net_value": 462218.53,
+      "baseline_recovery_rate": 0.644,
+      "heuristic_net_value": 642997.94,
+      "heuristic_recovery_rate": 0.892,
+      "recoveros_net_value": 666070.95,
+      "recoveros_recovery_rate": 0.924,
+      "diff_recoveros_minus_heuristic": 23073.01,
+      "bootstrap_ci_95": [
+        2907.3833,
+        45888.3192
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 26,
+        "Heuristic_wins": 25,
+        "ties": 199
+      }
+    },
+    "days_overdue_gte_10": {
+      "n_cases": 149,
+      "baseline_net_value": 28734.65,
+      "baseline_recovery_rate": 0.134228,
+      "heuristic_net_value": 83428.3,
+      "heuristic_recovery_rate": 0.442953,
+      "recoveros_net_value": 108052.61,
+      "recoveros_recovery_rate": 0.637584,
+      "diff_recoveros_minus_heuristic": 24624.31,
+      "bootstrap_ci_95": [
+        13400.9905,
+        38226.6432
+      ],
+      "ci_crosses_zero": false,
+      "paired_wins": {
+        "RecoverOS_wins": 40,
+        "Heuristic_wins": 66,
+        "ties": 43
+      }
+    }
+  },
+  "distribution_shift_analysis": {
+    "attempt_number": {
+      "train_mean": 1.76,
+      "train_std": 1.04,
+      "train_p90": 3.0,
+      "train_max": 5.0,
+      "by_round": {
+        "round_1": {
+          "active_cases": 1000,
+          "mean": 1.83,
+          "p90": 3.0,
+          "max": 6.0,
+          "pct_exceeding_train_p90": 9.1
+        },
+        "round_2": {
+          "active_cases": 287,
+          "mean": 4.02,
+          "p90": 7.0,
+          "max": 8.0,
+          "pct_exceeding_train_p90": 53.31
+        },
+        "round_3": {
+          "active_cases": 128,
+          "mean": 5.55,
+          "p90": 8.0,
+          "max": 8.0,
+          "pct_exceeding_train_p90": 91.41
+        }
+      }
+    },
+    "contact_count": {
+      "train_mean": 1.55,
+      "train_std": 2.0,
+      "train_p90": 4.0,
+      "train_max": 8.0,
+      "by_round": {
+        "round_1": {
+          "active_cases": 1000,
+          "mean": 1.75,
+          "p90": 5.0,
+          "max": 11.0,
+          "pct_exceeding_train_p90": 10.5
+        },
+        "round_2": {
+          "active_cases": 287,
+          "mean": 3.3,
+          "p90": 8.0,
+          "max": 11.0,
+          "pct_exceeding_train_p90": 27.18
+        },
+        "round_3": {
+          "active_cases": 128,
+          "mean": 5.03,
+          "p90": 11.0,
+          "max": 11.0,
+          "pct_exceeding_train_p90": 47.66
+        }
+      }
+    },
+    "days_overdue": {
+      "train_mean": 4.98,
+      "train_std": 7.25,
+      "train_p90": 13.0,
+      "train_max": 44.0,
+      "by_round": {
+        "round_1": {
+          "active_cases": 1000,
+          "mean": 5.79,
+          "p90": 15.0,
+          "max": 49.0,
+          "pct_exceeding_train_p90": 11.4
+        },
+        "round_2": {
+          "active_cases": 287,
+          "mean": 11.92,
+          "p90": 27.0,
+          "max": 49.0,
+          "pct_exceeding_train_p90": 31.36
+        },
+        "round_3": {
+          "active_cases": 128,
+          "mean": 18.01,
+          "p90": 37.0,
+          "max": 49.0,
+          "pct_exceeding_train_p90": 53.91
+        }
+      }
+    },
+    "previous_failure_count": {
+      "train_mean": 3.62,
+      "train_std": 3.24,
+      "train_p90": 8.0,
+      "train_max": 21.0,
+      "by_round": {
+        "round_1": {
+          "active_cases": 1000,
+          "mean": 4.07,
+          "p90": 9.0,
+          "max": 25.0,
+          "pct_exceeding_train_p90": 10.7
+        },
+        "round_2": {
+          "active_cases": 287,
+          "mean": 5.24,
+          "p90": 9.0,
+          "max": 25.0,
+          "pct_exceeding_train_p90": 14.29
+        },
+        "round_3": {
+          "active_cases": 128,
+          "mean": 5.87,
+          "p90": 10.0,
+          "max": 25.0,
+          "pct_exceeding_train_p90": 14.84
+        }
+      }
+    }
+  }
+}

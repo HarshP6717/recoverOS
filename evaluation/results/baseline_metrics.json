@@ -1,0 +1,60 @@
+{
+  "policy_name": "Deterministic Baseline",
+  "n_cases": 1000,
+  "recovered_count": 408,
+  "recovery_rate": 0.408,
+  "total_recovered_amount": 462997.68,
+  "total_action_cost": 980.5,
+  "total_net_value": 462017.18,
+  "avg_net_value_per_case": 462.01718,
+  "stop_count": 71,
+  "stop_rate": 0.071,
+  "action_distribution": {
+    "retry_now": 459,
+    "payment_method_update": 88,
+    "recovery_link": 44,
+    "retry_later": 221,
+    "stop": 71,
+    "send_reminder": 117
+  },
+  "action_recovery_breakdown": {
+    "payment_method_update": {
+      "count": 88,
+      "recovered": 72,
+      "recovery_rate": 0.818182,
+      "total_net_value": 93007.68
+    },
+    "recovery_link": {
+      "count": 44,
+      "recovered": 29,
+      "recovery_rate": 0.659091,
+      "total_net_value": 27772.58
+    },
+    "retry_later": {
+      "count": 221,
+      "recovered": 130,
+      "recovery_rate": 0.588235,
+      "total_net_value": 163421.9
+    },
+    "retry_now": {
+      "count": 459,
+      "recovered": 151,
+      "recovery_rate": 0.328976,
+      "total_net_value": 139437.25
+    },
+    "send_reminder": {
+      "count": 117,
+      "recovered": 26,
+      "recovery_rate": 0.222222,
+      "total_net_value": 38377.77
+    },
+    "stop": {
+      "count": 71,
+      "recovered": 0,
+      "recovery_rate": 0.0,
+      "total_net_value": 0.0
+    }
+  },
+  "avg_predicted_erv": null,
+  "guardrails_triggered_total": null
+}

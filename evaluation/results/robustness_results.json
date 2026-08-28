@@ -1,0 +1,2852 @@
+{
+  "generated_at": "2026-08-28T08:01:07Z",
+  "multi_seed_experiments": {
+    "seed_offsets": [
+      0,
+      1000,
+      2000,
+      3000,
+      4000
+    ],
+    "runs": [
+      {
+        "seed_offset": 0,
+        "baseline_recovery_rate": 0.408,
+        "baseline_net_value": 462017.18,
+        "heuristic_recovery_rate": 0.701,
+        "heuristic_net_value": 840019.72,
+        "recoveros_recovery_rate": 0.705,
+        "recoveros_net_value": 841315.58,
+        "diff_net_value_vs_heuristic": 1295.86,
+        "uplift_pct_vs_heuristic": 0.1543
+      },
+      {
+        "seed_offset": 1000,
+        "baseline_recovery_rate": 0.413,
+        "baseline_net_value": 462932.88,
+        "heuristic_recovery_rate": 0.687,
+        "heuristic_net_value": 748413.44,
+        "recoveros_recovery_rate": 0.694,
+        "recoveros_net_value": 756753.85,
+        "diff_net_value_vs_heuristic": 8340.41,
+        "uplift_pct_vs_heuristic": 1.1144
+      },
+      {
+        "seed_offset": 2000,
+        "baseline_recovery_rate": 0.398,
+        "baseline_net_value": 465407.91,
+        "heuristic_recovery_rate": 0.671,
+        "heuristic_net_value": 789786.05,
+        "recoveros_recovery_rate": 0.681,
+        "recoveros_net_value": 800703.6,
+        "diff_net_value_vs_heuristic": 10917.55,
+        "uplift_pct_vs_heuristic": 1.3823
+      },
+      {
+        "seed_offset": 3000,
+        "baseline_recovery_rate": 0.4,
+        "baseline_net_value": 434079.55,
+        "heuristic_recovery_rate": 0.699,
+        "heuristic_net_value": 789158.03,
+        "recoveros_recovery_rate": 0.709,
+        "recoveros_net_value": 792329.23,
+        "diff_net_value_vs_heuristic": 3171.2,
+        "uplift_pct_vs_heuristic": 0.4018
+      },
+      {
+        "seed_offset": 4000,
+        "baseline_recovery_rate": 0.401,
+        "baseline_net_value": 466140.05,
+        "heuristic_recovery_rate": 0.702,
+        "heuristic_net_value": 844357.85,
+        "recoveros_recovery_rate": 0.715,
+        "recoveros_net_value": 858669.19,
+        "diff_net_value_vs_heuristic": 14311.34,
+        "uplift_pct_vs_heuristic": 1.6949
+      }
+    ],
+    "summary": {
+      "baseline_net_value_mean": 458115.51,
+      "baseline_net_value_std": 12113.87,
+      "heuristic_net_value_mean": 802347.02,
+      "heuristic_net_value_std": 35846.06,
+      "recoveros_net_value_mean": 809954.29,
+      "recoveros_net_value_std": 36285.47,
+      "mean_net_value_diff_recoveros_minus_heuristic": 7607.27,
+      "std_net_value_diff": 4815.65,
+      "min_diff": 1295.86,
+      "max_diff": 14311.34
+    }
+  },
+  "distribution_slice_experiments": {
+    "amount_low": {
+      "slice_spec": {
+        "col": "amount",
+        "op": "lt",
+        "val": 504.415
+      },
+      "results": {
+        "n": 250,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 250,
+          "recovery_rate": 0.372,
+          "recovered_count": 93,
+          "total_net_value": 25468.71,
+          "avg_net_value": 101.8748,
+          "total_action_cost": 253.5,
+          "total_recovered_amount": 25722.21,
+          "action_distribution": {
+            "retry_now": 121,
+            "payment_method_update": 21,
+            "recovery_link": 13,
+            "retry_later": 61,
+            "send_reminder": 20,
+            "stop": 14
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 250,
+          "recovery_rate": 0.628,
+          "recovered_count": 157,
+          "total_net_value": 43560.92,
+          "avg_net_value": 174.2437,
+          "total_action_cost": 450.5,
+          "total_recovered_amount": 44011.42,
+          "action_distribution": {
+            "retry_later": 153,
+            "payment_method_update": 43,
+            "recovery_link": 37,
+            "escalate_human": 5,
+            "send_reminder": 12
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 250,
+          "recovery_rate": 0.644,
+          "recovered_count": 161,
+          "total_net_value": 44492.11,
+          "avg_net_value": 177.9684,
+          "total_action_cost": 437.5,
+          "total_recovered_amount": 44929.61,
+          "action_distribution": {
+            "retry_later": 148,
+            "payment_method_update": 45,
+            "recovery_link": 53,
+            "escalate_human": 4
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 19023.4,
+          "relative_uplift_pct": 74.6932,
+          "bootstrap_ci_95": [
+            15279.5873,
+            23478.082
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 73,
+            "Baseline_wins": 53,
+            "ties": 124,
+            "mean_delta": 76.0936
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 931.19,
+          "relative_uplift_pct": 2.1377,
+          "bootstrap_ci_95": [
+            227.4075,
+            1855.8195
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 15,
+            "Heuristic_wins": 18,
+            "ties": 217,
+            "mean_delta": 3.72476
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    },
+    "amount_high": {
+      "slice_spec": {
+        "col": "amount",
+        "op": "gte",
+        "val": 1500.528
+      },
+      "results": {
+        "n": 250,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 250,
+          "recovery_rate": 0.348,
+          "recovered_count": 87,
+          "total_net_value": 254447.39,
+          "avg_net_value": 1017.7896,
+          "total_action_cost": 243.5,
+          "total_recovered_amount": 254690.89,
+          "action_distribution": {
+            "retry_now": 110,
+            "stop": 19,
+            "retry_later": 59,
+            "payment_method_update": 23,
+            "recovery_link": 9,
+            "send_reminder": 30
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 250,
+          "recovery_rate": 0.6,
+          "recovered_count": 150,
+          "total_net_value": 444617.64,
+          "avg_net_value": 1778.4706,
+          "total_action_cost": 473.5,
+          "total_recovered_amount": 445091.14,
+          "action_distribution": {
+            "retry_later": 151,
+            "send_reminder": 18,
+            "payment_method_update": 42,
+            "escalate_human": 6,
+            "recovery_link": 33
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 250,
+          "recovery_rate": 0.612,
+          "recovered_count": 153,
+          "total_net_value": 449070.89,
+          "avg_net_value": 1796.2836,
+          "total_action_cost": 603.5,
+          "total_recovered_amount": 449674.39,
+          "action_distribution": {
+            "payment_method_update": 40,
+            "retry_later": 153,
+            "recovery_link": 47,
+            "escalate_human": 10
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 194623.5,
+          "relative_uplift_pct": 76.4887,
+          "bootstrap_ci_95": [
+            144709.7475,
+            249673.1728
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 72,
+            "Baseline_wins": 60,
+            "ties": 118,
+            "mean_delta": 778.494
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 4453.25,
+          "relative_uplift_pct": 1.0016,
+          "bootstrap_ci_95": [
+            -169.2375,
+            10478.441
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 15,
+            "Heuristic_wins": 26,
+            "ties": 209,
+            "mean_delta": 17.813
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "attempt_early": {
+      "slice_spec": {
+        "col": "attempt_number",
+        "op": "eq",
+        "val": 1
+      },
+      "results": {
+        "n": 547,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 547,
+          "recovery_rate": 0.380256,
+          "recovered_count": 208,
+          "total_net_value": 234651.61,
+          "avg_net_value": 428.9792,
+          "total_action_cost": 635.0,
+          "total_recovered_amount": 235286.61,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 547,
+          "recovery_rate": 0.749543,
+          "recovered_count": 410,
+          "total_net_value": 484800.43,
+          "avg_net_value": 886.2896,
+          "total_action_cost": 1222.0,
+          "total_recovered_amount": 486022.43,
+          "action_distribution": {
+            "retry_later": 368,
+            "payment_method_update": 88,
+            "recovery_link": 72,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 547,
+          "recovery_rate": 0.747715,
+          "recovered_count": 409,
+          "total_net_value": 483541.43,
+          "avg_net_value": 883.988,
+          "total_action_cost": 974.5,
+          "total_recovered_amount": 484515.93,
+          "action_distribution": {
+            "retry_later": 347,
+            "payment_method_update": 85,
+            "recovery_link": 105,
+            "escalate_human": 10
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 248889.82,
+          "relative_uplift_pct": 106.0678,
+          "bootstrap_ci_95": [
+            198692.1395,
+            307233.4185
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 222,
+            "Baseline_wins": 55,
+            "ties": 270,
+            "mean_delta": 455.008812
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -1259.0,
+          "relative_uplift_pct": -0.2597,
+          "bootstrap_ci_95": [
+            -4356.8875,
+            444.7625
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 33,
+            "Heuristic_wins": 24,
+            "ties": 490,
+            "mean_delta": -2.301645
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "attempt_late": {
+      "slice_spec": {
+        "col": "attempt_number",
+        "op": "gte",
+        "val": 3
+      },
+      "results": {
+        "n": 188,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 188,
+          "recovery_rate": 0.106383,
+          "recovered_count": 20,
+          "total_net_value": 30173.72,
+          "avg_net_value": 160.4985,
+          "total_action_cost": 58.5,
+          "total_recovered_amount": 30232.22,
+          "action_distribution": {
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 188,
+          "recovery_rate": 0.260638,
+          "recovered_count": 49,
+          "total_net_value": 64098.76,
+          "avg_net_value": 340.9509,
+          "total_action_cost": 194.5,
+          "total_recovered_amount": 64293.26,
+          "action_distribution": {
+            "send_reminder": 64,
+            "recovery_link": 23,
+            "payment_method_update": 27,
+            "retry_later": 74
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 188,
+          "recovery_rate": 0.324468,
+          "recovered_count": 61,
+          "total_net_value": 80738.53,
+          "avg_net_value": 429.4603,
+          "total_action_cost": 459.5,
+          "total_recovered_amount": 81198.03,
+          "action_distribution": {
+            "retry_later": 93,
+            "recovery_link": 39,
+            "payment_method_update": 49,
+            "escalate_human": 7
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 50564.81,
+          "relative_uplift_pct": 167.579,
+          "bootstrap_ci_95": [
+            30689.0517,
+            77194.357
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 41,
+            "Baseline_wins": 147,
+            "ties": 0,
+            "mean_delta": 268.961755
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 16639.77,
+          "relative_uplift_pct": 25.9596,
+          "bootstrap_ci_95": [
+            5665.8968,
+            31403.7507
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 18,
+            "Heuristic_wins": 61,
+            "ties": 109,
+            "mean_delta": 88.509415
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    },
+    "contact_fresh": {
+      "slice_spec": {
+        "col": "contact_count",
+        "op": "lte",
+        "val": 1
+      },
+      "results": {
+        "n": 685,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 685,
+          "recovery_rate": 0.440876,
+          "recovered_count": 302,
+          "total_net_value": 349670.39,
+          "avg_net_value": 510.4677,
+          "total_action_cost": 784.0,
+          "total_recovered_amount": 350454.39,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 22,
+            "retry_later": 116
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 685,
+          "recovery_rate": 0.756204,
+          "recovered_count": 518,
+          "total_net_value": 608807.72,
+          "avg_net_value": 888.7704,
+          "total_action_cost": 1396.0,
+          "total_recovered_amount": 610203.72,
+          "action_distribution": {
+            "retry_later": 459,
+            "payment_method_update": 113,
+            "recovery_link": 94,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 685,
+          "recovery_rate": 0.753285,
+          "recovered_count": 516,
+          "total_net_value": 603420.33,
+          "avg_net_value": 880.9056,
+          "total_action_cost": 1204.0,
+          "total_recovered_amount": 604624.33,
+          "action_distribution": {
+            "retry_later": 435,
+            "payment_method_update": 104,
+            "recovery_link": 134,
+            "escalate_human": 12
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 253749.94,
+          "relative_uplift_pct": 72.5683,
+          "bootstrap_ci_95": [
+            203234.7842,
+            306065.7823
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 236,
+            "Baseline_wins": 81,
+            "ties": 368,
+            "mean_delta": 370.437869
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -5387.39,
+          "relative_uplift_pct": -0.8849,
+          "bootstrap_ci_95": [
+            -16135.5275,
+            224.6
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 37,
+            "Heuristic_wins": 30,
+            "ties": 618,
+            "mean_delta": -7.864803
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "contact_fatigued": {
+      "slice_spec": {
+        "col": "contact_count",
+        "op": "gte",
+        "val": 4
+      },
+      "results": {
+        "n": 138,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 138,
+          "recovery_rate": 0.094203,
+          "recovered_count": 13,
+          "total_net_value": 12036.8,
+          "avg_net_value": 87.2232,
+          "total_action_cost": 33.5,
+          "total_recovered_amount": 12070.3,
+          "action_distribution": {
+            "stop": 71,
+            "send_reminder": 67
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 138,
+          "recovery_rate": 0.224638,
+          "recovered_count": 31,
+          "total_net_value": 35738.87,
+          "avg_net_value": 258.9773,
+          "total_action_cost": 129.5,
+          "total_recovered_amount": 35868.37,
+          "action_distribution": {
+            "send_reminder": 64,
+            "recovery_link": 17,
+            "payment_method_update": 15,
+            "retry_later": 42
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 138,
+          "recovery_rate": 0.289855,
+          "recovered_count": 40,
+          "total_net_value": 40821.69,
+          "avg_net_value": 295.8093,
+          "total_action_cost": 365.5,
+          "total_recovered_amount": 41187.19,
+          "action_distribution": {
+            "retry_later": 63,
+            "recovery_link": 31,
+            "payment_method_update": 38,
+            "escalate_human": 6
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 28784.89,
+          "relative_uplift_pct": 239.1407,
+          "bootstrap_ci_95": [
+            13421.347,
+            54629.4212
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 27,
+            "Baseline_wins": 111,
+            "ties": 0,
+            "mean_delta": 208.586159
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 5082.82,
+          "relative_uplift_pct": 14.2221,
+          "bootstrap_ci_95": [
+            1557.877,
+            9537.4802
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 15,
+            "Heuristic_wins": 60,
+            "ties": 63,
+            "mean_delta": 36.832029
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    },
+    "payment_upi": {
+      "slice_spec": {
+        "col": "payment_method",
+        "op": "eq",
+        "val": "upi"
+      },
+      "results": {
+        "n": 462,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 462,
+          "recovery_rate": 0.372294,
+          "recovered_count": 172,
+          "total_net_value": 193633.03,
+          "avg_net_value": 419.1191,
+          "total_action_cost": 432.5,
+          "total_recovered_amount": 194065.53,
+          "action_distribution": {
+            "retry_now": 222,
+            "retry_later": 115,
+            "recovery_link": 11,
+            "payment_method_update": 26,
+            "send_reminder": 54,
+            "stop": 34
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 462,
+          "recovery_rate": 0.642857,
+          "recovered_count": 297,
+          "total_net_value": 355937.81,
+          "avg_net_value": 770.4282,
+          "total_action_cost": 644.5,
+          "total_recovered_amount": 356582.31,
+          "action_distribution": {
+            "retry_later": 303,
+            "payment_method_update": 42,
+            "recovery_link": 81,
+            "send_reminder": 32,
+            "escalate_human": 4
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 462,
+          "recovery_rate": 0.655844,
+          "recovered_count": 303,
+          "total_net_value": 359624.35,
+          "avg_net_value": 778.4077,
+          "total_action_cost": 787.0,
+          "total_recovered_amount": 360411.35,
+          "action_distribution": {
+            "retry_later": 295,
+            "recovery_link": 132,
+            "payment_method_update": 27,
+            "escalate_human": 8
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 165991.32,
+          "relative_uplift_pct": 85.7247,
+          "bootstrap_ci_95": [
+            123280.899,
+            216102.7437
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 149,
+            "Baseline_wins": 101,
+            "ties": 212,
+            "mean_delta": 359.288571
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 3686.54,
+          "relative_uplift_pct": 1.0357,
+          "bootstrap_ci_95": [
+            823.3518,
+            6896.9033
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 35,
+            "Heuristic_wins": 41,
+            "ties": 386,
+            "mean_delta": 7.979524
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    },
+    "payment_card": {
+      "slice_spec": {
+        "col": "payment_method",
+        "op": "eq",
+        "val": "card"
+      },
+      "results": {
+        "n": 293,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 293,
+          "recovery_rate": 0.399317,
+          "recovered_count": 117,
+          "total_net_value": 150704.73,
+          "avg_net_value": 514.3506,
+          "total_action_cost": 315.5,
+          "total_recovered_amount": 151020.23,
+          "action_distribution": {
+            "retry_now": 111,
+            "payment_method_update": 49,
+            "recovery_link": 25,
+            "stop": 22,
+            "send_reminder": 34,
+            "retry_later": 52
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 293,
+          "recovery_rate": 0.641638,
+          "recovered_count": 188,
+          "total_net_value": 214792.0,
+          "avg_net_value": 733.0785,
+          "total_action_cost": 707.5,
+          "total_recovered_amount": 215499.5,
+          "action_distribution": {
+            "retry_later": 144,
+            "payment_method_update": 93,
+            "recovery_link": 25,
+            "send_reminder": 20,
+            "escalate_human": 11
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 293,
+          "recovery_rate": 0.65529,
+          "recovered_count": 192,
+          "total_net_value": 217770.3,
+          "avg_net_value": 743.2433,
+          "total_action_cost": 516.0,
+          "total_recovered_amount": 218286.3,
+          "action_distribution": {
+            "retry_later": 142,
+            "payment_method_update": 124,
+            "recovery_link": 24,
+            "escalate_human": 3
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 67065.57,
+          "relative_uplift_pct": 44.5013,
+          "bootstrap_ci_95": [
+            47060.9855,
+            90544.7392
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 75,
+            "Baseline_wins": 83,
+            "ties": 135,
+            "mean_delta": 228.89273
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 2978.3,
+          "relative_uplift_pct": 1.3866,
+          "bootstrap_ci_95": [
+            623.5875,
+            6763.4435
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 15,
+            "Heuristic_wins": 30,
+            "ties": 248,
+            "mean_delta": 10.164846
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    },
+    "payment_mandate_nach": {
+      "slice_spec": {
+        "col": "payment_method",
+        "op": "eq",
+        "val": "mandate_nach"
+      },
+      "results": {
+        "n": 92,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 92,
+          "recovery_rate": 0.315217,
+          "recovered_count": 29,
+          "total_net_value": 55008.31,
+          "avg_net_value": 597.9164,
+          "total_action_cost": 86.0,
+          "total_recovered_amount": 55094.31,
+          "action_distribution": {
+            "retry_now": 48,
+            "stop": 7,
+            "send_reminder": 11,
+            "retry_later": 19,
+            "payment_method_update": 6,
+            "recovery_link": 1
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 92,
+          "recovery_rate": 0.619565,
+          "recovered_count": 57,
+          "total_net_value": 85705.49,
+          "avg_net_value": 931.5814,
+          "total_action_cost": 105.0,
+          "total_recovered_amount": 85810.49,
+          "action_distribution": {
+            "retry_later": 68,
+            "send_reminder": 5,
+            "payment_method_update": 12,
+            "recovery_link": 7
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 92,
+          "recovery_rate": 0.630435,
+          "recovered_count": 58,
+          "total_net_value": 87210.04,
+          "avg_net_value": 947.9352,
+          "total_action_cost": 109.0,
+          "total_recovered_amount": 87319.04,
+          "action_distribution": {
+            "payment_method_update": 14,
+            "retry_later": 72,
+            "recovery_link": 6
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 32201.73,
+          "relative_uplift_pct": 58.5398,
+          "bootstrap_ci_95": [
+            20235.032,
+            43886.5142
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 29,
+            "Baseline_wins": 16,
+            "ties": 47,
+            "mean_delta": 350.018804
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 1504.55,
+          "relative_uplift_pct": 1.7555,
+          "bootstrap_ci_95": [
+            -9.0,
+            4524.9125
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 2,
+            "Heuristic_wins": 6,
+            "ties": 84,
+            "mean_delta": 16.353804
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "failure_insufficient_funds": {
+      "slice_spec": {
+        "col": "failure_type",
+        "op": "eq",
+        "val": "insufficient_funds"
+      },
+      "results": {
+        "n": 295,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 295,
+          "recovery_rate": 0.223729,
+          "recovered_count": 66,
+          "total_net_value": 106601.63,
+          "avg_net_value": 361.3615,
+          "total_action_cost": 263.0,
+          "total_recovered_amount": 106864.63,
+          "action_distribution": {
+            "stop": 15,
+            "retry_now": 182,
+            "retry_later": 64,
+            "send_reminder": 34
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 295,
+          "recovery_rate": 0.630508,
+          "recovered_count": 186,
+          "total_net_value": 238622.52,
+          "avg_net_value": 808.8899,
+          "total_action_cost": 290.5,
+          "total_recovered_amount": 238913.02,
+          "action_distribution": {
+            "send_reminder": 12,
+            "retry_later": 280,
+            "recovery_link": 3
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 295,
+          "recovery_rate": 0.630508,
+          "recovered_count": 186,
+          "total_net_value": 238618.02,
+          "avg_net_value": 808.8746,
+          "total_action_cost": 295.0,
+          "total_recovered_amount": 238913.02,
+          "action_distribution": {
+            "retry_later": 295
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 132016.39,
+          "relative_uplift_pct": 123.8409,
+          "bootstrap_ci_95": [
+            102252.5042,
+            164950.965
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 120,
+            "Baseline_wins": 41,
+            "ties": 134,
+            "mean_delta": 447.513186
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -4.5,
+          "relative_uplift_pct": -0.0019,
+          "bootstrap_ci_95": [
+            -8.7625,
+            -1.0
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 3,
+            "Heuristic_wins": 12,
+            "ties": 280,
+            "mean_delta": -0.015254
+          }
+        },
+        "verdict_vs_heuristic": "Heuristic Wins (statistically significant)"
+      }
+    },
+    "failure_bank_timeout": {
+      "slice_spec": {
+        "col": "failure_type",
+        "op": "eq",
+        "val": "bank_timeout"
+      },
+      "results": {
+        "n": 196,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 196,
+          "recovery_rate": 0.642857,
+          "recovered_count": 126,
+          "total_net_value": 129612.69,
+          "avg_net_value": 661.2892,
+          "total_action_cost": 181.0,
+          "total_recovered_amount": 129793.69,
+          "action_distribution": {
+            "retry_now": 105,
+            "retry_later": 65,
+            "send_reminder": 22,
+            "stop": 4
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 196,
+          "recovery_rate": 0.704082,
+          "recovered_count": 138,
+          "total_net_value": 152655.49,
+          "avg_net_value": 778.8545,
+          "total_action_cost": 194.0,
+          "total_recovered_amount": 152849.49,
+          "action_distribution": {
+            "retry_later": 192,
+            "send_reminder": 4
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 196,
+          "recovery_rate": 0.714286,
+          "recovered_count": 140,
+          "total_net_value": 155205.35,
+          "avg_net_value": 791.864,
+          "total_action_cost": 196.0,
+          "total_recovered_amount": 155401.35,
+          "action_distribution": {
+            "retry_later": 196
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 25592.66,
+          "relative_uplift_pct": 19.7455,
+          "bootstrap_ci_95": [
+            9202.539,
+            55572.5385
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 14,
+            "Baseline_wins": 17,
+            "ties": 165,
+            "mean_delta": 130.574796
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 2549.86,
+          "relative_uplift_pct": 1.6703,
+          "bootstrap_ci_95": [
+            -1.5,
+            6616.6725
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 2,
+            "Heuristic_wins": 2,
+            "ties": 192,
+            "mean_delta": 13.00949
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "failure_hard_failures": {
+      "slice_spec": {
+        "col": "failure_type",
+        "op": "in",
+        "val": [
+          "expired_card",
+          "hard_decline",
+          "invalid_payment_method"
+        ]
+      },
+      "results": {
+        "n": 189,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 189,
+          "recovery_rate": 0.513228,
+          "recovered_count": 97,
+          "total_net_value": 126315.37,
+          "avg_net_value": 668.3353,
+          "total_action_cost": 254.5,
+          "total_recovered_amount": 126569.87,
+          "action_distribution": {
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "send_reminder": 25,
+            "stop": 32
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 189,
+          "recovery_rate": 0.603175,
+          "recovered_count": 114,
+          "total_net_value": 138614.62,
+          "avg_net_value": 733.4107,
+          "total_action_cost": 333.0,
+          "total_recovered_amount": 138947.62,
+          "action_distribution": {
+            "payment_method_update": 157,
+            "send_reminder": 29,
+            "recovery_link": 3
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 189,
+          "recovery_rate": 0.640212,
+          "recovered_count": 121,
+          "total_net_value": 142270.45,
+          "avg_net_value": 752.7537,
+          "total_action_cost": 525.0,
+          "total_recovered_amount": 142795.45,
+          "action_distribution": {
+            "payment_method_update": 141,
+            "recovery_link": 42,
+            "escalate_human": 6
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 15955.08,
+          "relative_uplift_pct": 12.6311,
+          "bootstrap_ci_95": [
+            8894.7808,
+            23405.8875
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 45,
+            "Baseline_wins": 70,
+            "ties": 74,
+            "mean_delta": 84.418413
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 3655.83,
+          "relative_uplift_pct": 2.6374,
+          "bootstrap_ci_95": [
+            1267.9055,
+            6727.5523
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 42,
+            "Heuristic_wins": 29,
+            "ties": 118,
+            "mean_delta": 19.343016
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    },
+    "failure_customer_abandoned": {
+      "slice_spec": {
+        "col": "failure_type",
+        "op": "eq",
+        "val": "customer_abandoned"
+      },
+      "results": {
+        "n": 133,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 133,
+          "recovery_rate": 0.12782,
+          "recovered_count": 17,
+          "total_net_value": 37228.65,
+          "avg_net_value": 279.9147,
+          "total_action_cost": 122.0,
+          "total_recovered_amount": 37350.65,
+          "action_distribution": {
+            "send_reminder": 16,
+            "retry_now": 72,
+            "retry_later": 42,
+            "stop": 3
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 133,
+          "recovery_rate": 0.661654,
+          "recovered_count": 88,
+          "total_net_value": 111434.18,
+          "avg_net_value": 837.851,
+          "total_action_cost": 196.5,
+          "total_recovered_amount": 111630.68,
+          "action_distribution": {
+            "recovery_link": 130,
+            "send_reminder": 3
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 133,
+          "recovery_rate": 0.661654,
+          "recovered_count": 88,
+          "total_net_value": 111431.18,
+          "avg_net_value": 837.8284,
+          "total_action_cost": 199.5,
+          "total_recovered_amount": 111630.68,
+          "action_distribution": {
+            "recovery_link": 133
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 74202.53,
+          "relative_uplift_pct": 199.3157,
+          "bootstrap_ci_95": [
+            51194.729,
+            104116.4975
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 71,
+            "Baseline_wins": 62,
+            "ties": 0,
+            "mean_delta": 557.913759
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -3.0,
+          "relative_uplift_pct": -0.0027,
+          "bootstrap_ci_95": [
+            -7.0,
+            0.0
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 0,
+            "Heuristic_wins": 3,
+            "ties": 130,
+            "mean_delta": -0.022556
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "days_overdue_low": {
+      "slice_spec": {
+        "col": "days_overdue",
+        "op": "lte",
+        "val": 2
+      },
+      "results": {
+        "n": 547,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 547,
+          "recovery_rate": 0.380256,
+          "recovered_count": 208,
+          "total_net_value": 234651.61,
+          "avg_net_value": 428.9792,
+          "total_action_cost": 635.0,
+          "total_recovered_amount": 235286.61,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 547,
+          "recovery_rate": 0.749543,
+          "recovered_count": 410,
+          "total_net_value": 484800.43,
+          "avg_net_value": 886.2896,
+          "total_action_cost": 1222.0,
+          "total_recovered_amount": 486022.43,
+          "action_distribution": {
+            "retry_later": 368,
+            "payment_method_update": 88,
+            "recovery_link": 72,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 547,
+          "recovery_rate": 0.747715,
+          "recovered_count": 409,
+          "total_net_value": 483541.43,
+          "avg_net_value": 883.988,
+          "total_action_cost": 974.5,
+          "total_recovered_amount": 484515.93,
+          "action_distribution": {
+            "retry_later": 347,
+            "payment_method_update": 85,
+            "recovery_link": 105,
+            "escalate_human": 10
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 248889.82,
+          "relative_uplift_pct": 106.0678,
+          "bootstrap_ci_95": [
+            198692.1395,
+            307233.4185
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 222,
+            "Baseline_wins": 55,
+            "ties": 270,
+            "mean_delta": 455.008812
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -1259.0,
+          "relative_uplift_pct": -0.2597,
+          "bootstrap_ci_95": [
+            -4356.8875,
+            444.7625
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 33,
+            "Heuristic_wins": 24,
+            "ties": 490,
+            "mean_delta": -2.301645
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "days_overdue_high": {
+      "slice_spec": {
+        "col": "days_overdue",
+        "op": "gte",
+        "val": 10
+      },
+      "results": {
+        "n": 149,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 149,
+          "recovery_rate": 0.09396,
+          "recovered_count": 14,
+          "total_net_value": 16043.92,
+          "avg_net_value": 107.6773,
+          "total_action_cost": 39.0,
+          "total_recovered_amount": 16082.92,
+          "action_distribution": {
+            "stop": 71,
+            "send_reminder": 78
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 149,
+          "recovery_rate": 0.275168,
+          "recovered_count": 41,
+          "total_net_value": 46635.78,
+          "avg_net_value": 312.9918,
+          "total_action_cost": 145.5,
+          "total_recovered_amount": 46781.28,
+          "action_distribution": {
+            "send_reminder": 64,
+            "recovery_link": 21,
+            "payment_method_update": 18,
+            "retry_later": 46
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 149,
+          "recovery_rate": 0.328859,
+          "recovered_count": 49,
+          "total_net_value": 54528.81,
+          "avg_net_value": 365.9652,
+          "total_action_cost": 383.0,
+          "total_recovered_amount": 54911.81,
+          "action_distribution": {
+            "retry_later": 65,
+            "recovery_link": 36,
+            "payment_method_update": 42,
+            "escalate_human": 6
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 38484.89,
+          "relative_uplift_pct": 239.8721,
+          "bootstrap_ci_95": [
+            19578.6765,
+            64235.4945
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 35,
+            "Baseline_wins": 114,
+            "ties": 0,
+            "mean_delta": 258.287852
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 7893.03,
+          "relative_uplift_pct": 16.9248,
+          "bootstrap_ci_95": [
+            2517.3517,
+            14585.7327
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 15,
+            "Heuristic_wins": 62,
+            "ties": 72,
+            "mean_delta": 52.973356
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    },
+    "high_amount_late_attempt": {
+      "slice_spec": {
+        "description": "amount >= \u20b91500.53 AND attempt_number >= 2"
+      },
+      "results": {
+        "n": 117,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 117,
+          "recovery_rate": 0.350427,
+          "recovered_count": 41,
+          "total_net_value": 126523.32,
+          "avg_net_value": 1081.3959,
+          "total_action_cost": 87.5,
+          "total_recovered_amount": 126610.82,
+          "action_distribution": {
+            "stop": 19,
+            "retry_later": 59,
+            "recovery_link": 9,
+            "send_reminder": 30
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 117,
+          "recovery_rate": 0.435897,
+          "recovered_count": 51,
+          "total_net_value": 156704.82,
+          "avg_net_value": 1339.3574,
+          "total_action_cost": 133.0,
+          "total_recovered_amount": 156837.82,
+          "action_distribution": {
+            "send_reminder": 18,
+            "retry_later": 68,
+            "payment_method_update": 19,
+            "recovery_link": 12
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 117,
+          "recovery_rate": 0.461538,
+          "recovered_count": 54,
+          "total_net_value": 161116.73,
+          "avg_net_value": 1377.0661,
+          "total_action_cost": 262.5,
+          "total_recovered_amount": 161379.23,
+          "action_distribution": {
+            "retry_later": 74,
+            "payment_method_update": 20,
+            "recovery_link": 19,
+            "escalate_human": 4
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 34593.41,
+          "relative_uplift_pct": 27.3415,
+          "bootstrap_ci_95": [
+            15015.1383,
+            58175.3723
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 13,
+            "Baseline_wins": 55,
+            "ties": 49,
+            "mean_delta": 295.670171
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 4411.91,
+          "relative_uplift_pct": 2.8154,
+          "bootstrap_ci_95": [
+            -150.2875,
+            10471.1965
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 7,
+            "Heuristic_wins": 20,
+            "ties": 90,
+            "mean_delta": 37.708632
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "fresh_contact_high_clv": {
+      "slice_spec": {
+        "description": "contact_count <= 1 AND CLV >= \u20b910,000"
+      },
+      "results": {
+        "n": 319,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 319,
+          "recovery_rate": 0.426332,
+          "recovered_count": 136,
+          "total_net_value": 229863.65,
+          "avg_net_value": 720.5757,
+          "total_action_cost": 372.0,
+          "total_recovered_amount": 230235.65,
+          "action_distribution": {
+            "retry_now": 202,
+            "recovery_link": 12,
+            "retry_later": 58,
+            "payment_method_update": 47
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 319,
+          "recovery_rate": 0.724138,
+          "recovered_count": 231,
+          "total_net_value": 405456.07,
+          "avg_net_value": 1271.0222,
+          "total_action_cost": 662.0,
+          "total_recovered_amount": 406118.07,
+          "action_distribution": {
+            "retry_later": 206,
+            "payment_method_update": 60,
+            "escalate_human": 9,
+            "recovery_link": 44
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 319,
+          "recovery_rate": 0.717868,
+          "recovered_count": 229,
+          "total_net_value": 402954.17,
+          "avg_net_value": 1263.1792,
+          "total_action_cost": 606.5,
+          "total_recovered_amount": 403560.67,
+          "action_distribution": {
+            "payment_method_update": 53,
+            "retry_later": 196,
+            "recovery_link": 63,
+            "escalate_human": 7
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 173090.52,
+          "relative_uplift_pct": 75.3014,
+          "bootstrap_ci_95": [
+            129600.664,
+            228247.1132
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 104,
+            "Baseline_wins": 43,
+            "ties": 172,
+            "mean_delta": 542.603511
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -2501.9,
+          "relative_uplift_pct": -0.6171,
+          "bootstrap_ci_95": [
+            -6533.29,
+            111.2625
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 17,
+            "Heuristic_wins": 14,
+            "ties": 288,
+            "mean_delta": -7.842947
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    }
+  },
+  "feature_perturbation_experiments": {
+    "missing_failure_type_10pct": {
+      "type": "categorical_missingness",
+      "column": "failure_type",
+      "fraction": 0.1,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.401,
+          "recovered_count": 401,
+          "total_net_value": 447775.16,
+          "avg_net_value": 447.7752,
+          "total_action_cost": 974.0,
+          "total_recovered_amount": 448749.16,
+          "action_distribution": {
+            "retry_now": 464,
+            "payment_method_update": 83,
+            "recovery_link": 41,
+            "retry_later": 224,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.68,
+          "recovered_count": 680,
+          "total_net_value": 816023.15,
+          "avg_net_value": 816.0231,
+          "total_action_cost": 1618.0,
+          "total_recovered_amount": 817641.15,
+          "action_distribution": {
+            "retry_later": 644,
+            "payment_method_update": 155,
+            "send_reminder": 65,
+            "recovery_link": 121,
+            "escalate_human": 15
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.682,
+          "recovered_count": 682,
+          "total_net_value": 813660.22,
+          "avg_net_value": 813.6602,
+          "total_action_cost": 1923.5,
+          "total_recovered_amount": 815583.72,
+          "action_distribution": {
+            "retry_later": 540,
+            "payment_method_update": 190,
+            "recovery_link": 249,
+            "escalate_human": 21
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 365885.06,
+          "relative_uplift_pct": 81.7118,
+          "bootstrap_ci_95": [
+            300868.9673,
+            438372.5737
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 311,
+            "Baseline_wins": 279,
+            "ties": 410,
+            "mean_delta": 365.88506
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -2362.93,
+          "relative_uplift_pct": -0.2896,
+          "bootstrap_ci_95": [
+            -31314.4503,
+            27889.8977
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 65,
+            "Heuristic_wins": 179,
+            "ties": 756,
+            "mean_delta": -2.36293
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "missing_failure_type_25pct": {
+      "type": "categorical_missingness",
+      "column": "failure_type",
+      "fraction": 0.25,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.377,
+          "recovered_count": 377,
+          "total_net_value": 433525.41,
+          "avg_net_value": 433.5254,
+          "total_action_cost": 952.0,
+          "total_recovered_amount": 434477.41,
+          "action_distribution": {
+            "retry_now": 481,
+            "payment_method_update": 66,
+            "recovery_link": 31,
+            "retry_later": 234,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.639,
+          "recovered_count": 639,
+          "total_net_value": 773761.45,
+          "avg_net_value": 773.7614,
+          "total_action_cost": 1545.0,
+          "total_recovered_amount": 775306.45,
+          "action_distribution": {
+            "retry_later": 701,
+            "payment_method_update": 123,
+            "send_reminder": 65,
+            "recovery_link": 97,
+            "escalate_human": 14
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.65,
+          "recovered_count": 650,
+          "total_net_value": 776830.73,
+          "avg_net_value": 776.8307,
+          "total_action_cost": 1919.5,
+          "total_recovered_amount": 778750.23,
+          "action_distribution": {
+            "retry_later": 464,
+            "payment_method_update": 220,
+            "recovery_link": 297,
+            "escalate_human": 19
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 343305.32,
+          "relative_uplift_pct": 79.1892,
+          "bootstrap_ci_95": [
+            281859.1937,
+            422802.763
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 321,
+            "Baseline_wins": 347,
+            "ties": 332,
+            "mean_delta": 343.30532
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 3069.28,
+          "relative_uplift_pct": 0.3967,
+          "bootstrap_ci_95": [
+            -30694.3095,
+            39210.7805
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 91,
+            "Heuristic_wins": 276,
+            "ties": 633,
+            "mean_delta": 3.06928
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "missing_failure_type_50pct": {
+      "type": "categorical_missingness",
+      "column": "failure_type",
+      "fraction": 0.5,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.354,
+          "recovered_count": 354,
+          "total_net_value": 387992.93,
+          "avg_net_value": 387.9929,
+          "total_action_cost": 926.0,
+          "total_recovered_amount": 388918.93,
+          "action_distribution": {
+            "retry_now": 502,
+            "payment_method_update": 45,
+            "retry_later": 244,
+            "recovery_link": 21,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.582,
+          "recovered_count": 582,
+          "total_net_value": 678707.3,
+          "avg_net_value": 678.7073,
+          "total_action_cost": 1310.5,
+          "total_recovered_amount": 680017.8,
+          "action_distribution": {
+            "retry_later": 783,
+            "payment_method_update": 82,
+            "send_reminder": 67,
+            "recovery_link": 60,
+            "escalate_human": 8
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.604,
+          "recovered_count": 604,
+          "total_net_value": 726034.43,
+          "avg_net_value": 726.0344,
+          "total_action_cost": 1741.0,
+          "total_recovered_amount": 727775.43,
+          "action_distribution": {
+            "retry_later": 308,
+            "payment_method_update": 277,
+            "recovery_link": 406,
+            "escalate_human": 9
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 338041.5,
+          "relative_uplift_pct": 87.1257,
+          "bootstrap_ci_95": [
+            276938.8162,
+            417980.825
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 316,
+            "Baseline_wins": 459,
+            "ties": 225,
+            "mean_delta": 338.0415
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 47327.13,
+          "relative_uplift_pct": 6.9731,
+          "bootstrap_ci_95": [
+            -7766.2513,
+            109362.054
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 132,
+            "Heuristic_wins": 448,
+            "ties": 420,
+            "mean_delta": 47.32713
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "missing_payment_method_10pct": {
+      "type": "categorical_missingness",
+      "column": "payment_method",
+      "fraction": 0.1,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.701,
+          "recovered_count": 701,
+          "total_net_value": 840019.72,
+          "avg_net_value": 840.0197,
+          "total_action_cost": 1754.5,
+          "total_recovered_amount": 841774.22,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 167,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.705,
+          "recovered_count": 705,
+          "total_net_value": 841289.08,
+          "avg_net_value": 841.2891,
+          "total_action_cost": 1965.5,
+          "total_recovered_amount": 843254.58,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 168,
+            "recovery_link": 203,
+            "escalate_human": 24
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 379271.9,
+          "relative_uplift_pct": 82.0904,
+          "bootstrap_ci_95": [
+            321613.082,
+            459008.7795
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 317,
+            "Baseline_wins": 233,
+            "ties": 450,
+            "mean_delta": 379.2719
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 1269.36,
+          "relative_uplift_pct": 0.1511,
+          "bootstrap_ci_95": [
+            -2349.0602,
+            4836.4635
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 52,
+            "Heuristic_wins": 105,
+            "ties": 843,
+            "mean_delta": 1.26936
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "missing_payment_method_25pct": {
+      "type": "categorical_missingness",
+      "column": "payment_method",
+      "fraction": 0.25,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.701,
+          "recovered_count": 701,
+          "total_net_value": 840019.72,
+          "avg_net_value": 840.0197,
+          "total_action_cost": 1754.5,
+          "total_recovered_amount": 841774.22,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 167,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.705,
+          "recovered_count": 705,
+          "total_net_value": 842080.52,
+          "avg_net_value": 842.0805,
+          "total_action_cost": 1967.0,
+          "total_recovered_amount": 844047.52,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 171,
+            "recovery_link": 200,
+            "escalate_human": 24
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 380063.34,
+          "relative_uplift_pct": 82.2617,
+          "bootstrap_ci_95": [
+            323529.9327,
+            458947.742
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 318,
+            "Baseline_wins": 238,
+            "ties": 444,
+            "mean_delta": 380.06334
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 2060.8,
+          "relative_uplift_pct": 0.2453,
+          "bootstrap_ci_95": [
+            -2072.492,
+            6491.0807
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 48,
+            "Heuristic_wins": 105,
+            "ties": 847,
+            "mean_delta": 2.0608
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "missing_payment_method_50pct": {
+      "type": "categorical_missingness",
+      "column": "payment_method",
+      "fraction": 0.5,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.701,
+          "recovered_count": 701,
+          "total_net_value": 840019.72,
+          "avg_net_value": 840.0197,
+          "total_action_cost": 1754.5,
+          "total_recovered_amount": 841774.22,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 167,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.703,
+          "recovered_count": 703,
+          "total_net_value": 839393.43,
+          "avg_net_value": 839.3934,
+          "total_action_cost": 1851.0,
+          "total_recovered_amount": 841244.43,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 167,
+            "recovery_link": 208,
+            "escalate_human": 20
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 377376.25,
+          "relative_uplift_pct": 81.6801,
+          "bootstrap_ci_95": [
+            318589.8315,
+            456163.1362
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 315,
+            "Baseline_wins": 228,
+            "ties": 457,
+            "mean_delta": 377.37625
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": -626.29,
+          "relative_uplift_pct": -0.0746,
+          "bootstrap_ci_95": [
+            -5973.6688,
+            4081.1002
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 57,
+            "Heuristic_wins": 104,
+            "ties": 839,
+            "mean_delta": -0.62629
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "noisy_amount_10pct_std": {
+      "type": "numeric_noise",
+      "column": "amount",
+      "noise_std_fraction": 0.1,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.701,
+          "recovered_count": 701,
+          "total_net_value": 840075.72,
+          "avg_net_value": 840.0757,
+          "total_action_cost": 1698.5,
+          "total_recovered_amount": 841774.22,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 169,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 17
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.705,
+          "recovered_count": 705,
+          "total_net_value": 841430.08,
+          "avg_net_value": 841.4301,
+          "total_action_cost": 1824.5,
+          "total_recovered_amount": 843254.58,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 173,
+            "recovery_link": 202,
+            "escalate_human": 19,
+            "send_reminder": 1
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 379412.9,
+          "relative_uplift_pct": 82.121,
+          "bootstrap_ci_95": [
+            321728.107,
+            459090.767
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 318,
+            "Baseline_wins": 234,
+            "ties": 448,
+            "mean_delta": 379.4129
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 1354.36,
+          "relative_uplift_pct": 0.1612,
+          "bootstrap_ci_95": [
+            -2257.9558,
+            4933.086
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 53,
+            "Heuristic_wins": 101,
+            "ties": 846,
+            "mean_delta": 1.35436
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "noisy_amount_25pct_std": {
+      "type": "numeric_noise",
+      "column": "amount",
+      "noise_std_fraction": 0.25,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.7,
+          "recovered_count": 700,
+          "total_net_value": 839629.14,
+          "avg_net_value": 839.6291,
+          "total_action_cost": 1614.5,
+          "total_recovered_amount": 841243.64,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 172,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 14
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.704,
+          "recovered_count": 704,
+          "total_net_value": 840961.0,
+          "avg_net_value": 840.961,
+          "total_action_cost": 1763.0,
+          "total_recovered_amount": 842724.0,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 171,
+            "recovery_link": 203,
+            "escalate_human": 17,
+            "send_reminder": 3,
+            "stop": 1
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 378943.82,
+          "relative_uplift_pct": 82.0194,
+          "bootstrap_ci_95": [
+            320985.961,
+            458703.6787
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 319,
+            "Baseline_wins": 231,
+            "ties": 450,
+            "mean_delta": 378.94382
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 1331.86,
+          "relative_uplift_pct": 0.1586,
+          "bootstrap_ci_95": [
+            -2326.8385,
+            4931.2535
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 56,
+            "Heuristic_wins": 98,
+            "ties": 846,
+            "mean_delta": 1.33186
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "noisy_amount_50pct_std": {
+      "type": "numeric_noise",
+      "column": "amount",
+      "noise_std_fraction": 0.5,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.7,
+          "recovered_count": 700,
+          "total_net_value": 839629.14,
+          "avg_net_value": 839.6291,
+          "total_action_cost": 1614.5,
+          "total_recovered_amount": 841243.64,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 172,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 14
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.704,
+          "recovered_count": 704,
+          "total_net_value": 840995.5,
+          "avg_net_value": 840.9955,
+          "total_action_cost": 1728.5,
+          "total_recovered_amount": 842724.0,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 170,
+            "recovery_link": 200,
+            "escalate_human": 16,
+            "send_reminder": 7,
+            "stop": 2
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 378978.32,
+          "relative_uplift_pct": 82.0269,
+          "bootstrap_ci_95": [
+            321018.8735,
+            458735.4162
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 320,
+            "Baseline_wins": 228,
+            "ties": 452,
+            "mean_delta": 378.97832
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 1366.36,
+          "relative_uplift_pct": 0.1627,
+          "bootstrap_ci_95": [
+            -2306.7453,
+            4975.2963
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 63,
+            "Heuristic_wins": 95,
+            "ties": 842,
+            "mean_delta": 1.36636
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "noisy_days_overdue_25pct_std": {
+      "type": "numeric_noise",
+      "column": "days_overdue",
+      "noise_std_fraction": 0.25,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.701,
+          "recovered_count": 701,
+          "total_net_value": 840019.72,
+          "avg_net_value": 840.0197,
+          "total_action_cost": 1754.5,
+          "total_recovered_amount": 841774.22,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 167,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.705,
+          "recovered_count": 705,
+          "total_net_value": 841343.58,
+          "avg_net_value": 841.3436,
+          "total_action_cost": 1911.0,
+          "total_recovered_amount": 843254.58,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 173,
+            "recovery_link": 200,
+            "escalate_human": 22
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 379326.4,
+          "relative_uplift_pct": 82.1022,
+          "bootstrap_ci_95": [
+            321638.707,
+            459006.117
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 318,
+            "Baseline_wins": 235,
+            "ties": 447,
+            "mean_delta": 379.3264
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 1323.86,
+          "relative_uplift_pct": 0.1576,
+          "bootstrap_ci_95": [
+            -2317.114,
+            4877.2385
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 53,
+            "Heuristic_wins": 104,
+            "ties": 843,
+            "mean_delta": 1.32386
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "noisy_days_overdue_50pct_std": {
+      "type": "numeric_noise",
+      "column": "days_overdue",
+      "noise_std_fraction": 0.5,
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.408,
+          "recovered_count": 408,
+          "total_net_value": 462017.18,
+          "avg_net_value": 462.0172,
+          "total_action_cost": 980.5,
+          "total_recovered_amount": 462997.68,
+          "action_distribution": {
+            "retry_now": 459,
+            "payment_method_update": 88,
+            "recovery_link": 44,
+            "retry_later": 221,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.701,
+          "recovered_count": 701,
+          "total_net_value": 840019.72,
+          "avg_net_value": 840.0197,
+          "total_action_cost": 1754.5,
+          "total_recovered_amount": 841774.22,
+          "action_distribution": {
+            "retry_later": 613,
+            "payment_method_update": 167,
+            "send_reminder": 64,
+            "recovery_link": 137,
+            "escalate_human": 19
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.705,
+          "recovered_count": 705,
+          "total_net_value": 841343.58,
+          "avg_net_value": 841.3436,
+          "total_action_cost": 1911.0,
+          "total_recovered_amount": 843254.58,
+          "action_distribution": {
+            "retry_later": 605,
+            "payment_method_update": 173,
+            "recovery_link": 200,
+            "escalate_human": 22
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 379326.4,
+          "relative_uplift_pct": 82.1022,
+          "bootstrap_ci_95": [
+            321638.707,
+            459006.117
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 318,
+            "Baseline_wins": 235,
+            "ties": 447,
+            "mean_delta": 379.3264
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 1323.86,
+          "relative_uplift_pct": 0.1576,
+          "bootstrap_ci_95": [
+            -2317.114,
+            4877.2385
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 53,
+            "Heuristic_wins": 104,
+            "ties": 843,
+            "mean_delta": 1.32386
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "multi_feature_telemetry_degradation": {
+      "type": "multi_feature_combined",
+      "description": "20% missing failure_type + 20% missing payment_method + 20% noise on amount & days_overdue",
+      "results": {
+        "n": 1000,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 1000,
+          "recovery_rate": 0.383,
+          "recovered_count": 383,
+          "total_net_value": 440504.54,
+          "avg_net_value": 440.5045,
+          "total_action_cost": 955.0,
+          "total_recovered_amount": 441459.54,
+          "action_distribution": {
+            "retry_now": 480,
+            "payment_method_update": 67,
+            "recovery_link": 35,
+            "retry_later": 230,
+            "stop": 71,
+            "send_reminder": 117
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 1000,
+          "recovery_rate": 0.657,
+          "recovered_count": 657,
+          "total_net_value": 798027.55,
+          "avg_net_value": 798.0276,
+          "total_action_cost": 1530.0,
+          "total_recovered_amount": 799557.55,
+          "action_distribution": {
+            "retry_later": 680,
+            "payment_method_update": 131,
+            "send_reminder": 66,
+            "recovery_link": 110,
+            "escalate_human": 13
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 1000,
+          "recovery_rate": 0.665,
+          "recovered_count": 665,
+          "total_net_value": 808067.32,
+          "avg_net_value": 808.0673,
+          "total_action_cost": 1693.0,
+          "total_recovered_amount": 809760.32,
+          "action_distribution": {
+            "retry_later": 491,
+            "payment_method_update": 201,
+            "recovery_link": 292,
+            "escalate_human": 12,
+            "send_reminder": 4
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 367562.78,
+          "relative_uplift_pct": 83.4413,
+          "bootstrap_ci_95": [
+            308981.7672,
+            446134.283
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 326,
+            "Baseline_wins": 322,
+            "ties": 352,
+            "mean_delta": 367.56278
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 10039.77,
+          "relative_uplift_pct": 1.2581,
+          "bootstrap_ci_95": [
+            -8690.9068,
+            30256.9367
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 81,
+            "Heuristic_wins": 236,
+            "ties": 683,
+            "mean_delta": 10.03977
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    }
+  },
+  "stress_test_experiments": {
+    "rare_combinations_pool": {
+      "n": 24,
+      "combos": [
+        "customer_abandoned+wallet",
+        "hard_decline+wallet",
+        "invalid_payment_method+mandate_nach",
+        "invalid_payment_method+wallet",
+        "repeated_failure+wallet",
+        "soft_decline+wallet",
+        "unknown+mandate_nach",
+        "unknown+netbanking",
+        "unknown+wallet"
+      ],
+      "results": {
+        "n": 24,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 24,
+          "recovery_rate": 0.291667,
+          "recovered_count": 7,
+          "total_net_value": 6020.7,
+          "avg_net_value": 250.8625,
+          "total_action_cost": 24.0,
+          "total_recovered_amount": 6044.7,
+          "action_distribution": {
+            "retry_now": 11,
+            "send_reminder": 6,
+            "payment_method_update": 2,
+            "recovery_link": 2,
+            "retry_later": 3
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 24,
+          "recovery_rate": 0.666667,
+          "recovered_count": 16,
+          "total_net_value": 17619.19,
+          "avg_net_value": 734.1329,
+          "total_action_cost": 63.5,
+          "total_recovered_amount": 17682.69,
+          "action_distribution": {
+            "retry_later": 10,
+            "payment_method_update": 8,
+            "recovery_link": 5,
+            "escalate_human": 1
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 24,
+          "recovery_rate": 0.666667,
+          "recovered_count": 16,
+          "total_net_value": 17643.19,
+          "avg_net_value": 735.1329,
+          "total_action_cost": 39.5,
+          "total_recovered_amount": 17682.69,
+          "action_distribution": {
+            "payment_method_update": 10,
+            "recovery_link": 11,
+            "retry_later": 3
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 11622.49,
+          "relative_uplift_pct": 193.0422,
+          "bootstrap_ci_95": [
+            3577.604,
+            22152.8155
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 9,
+            "Baseline_wins": 11,
+            "ties": 4,
+            "mean_delta": 484.270417
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 24.0,
+          "relative_uplift_pct": 0.1362,
+          "bootstrap_ci_95": [
+            -6.5,
+            81.5
+          ],
+          "ci_crosses_zero": true,
+          "paired": {
+            "RecoverOS_wins": 1,
+            "Heuristic_wins": 7,
+            "ties": 16,
+            "mean_delta": 1.0
+          }
+        },
+        "verdict_vs_heuristic": "Inconclusive (CI crosses zero)"
+      }
+    },
+    "extreme_debt_fatigue_cases": {
+      "n": 84,
+      "description": "attempt >= 4 OR (contact >= 5 AND days_overdue >= 10)",
+      "results": {
+        "n": 84,
+        "baseline": {
+          "policy": "Deterministic Baseline",
+          "n": 84,
+          "recovery_rate": 0.011905,
+          "recovered_count": 1,
+          "total_net_value": 504.84,
+          "avg_net_value": 6.01,
+          "total_action_cost": 6.5,
+          "total_recovered_amount": 511.34,
+          "action_distribution": {
+            "stop": 71,
+            "send_reminder": 13
+          }
+        },
+        "heuristic": {
+          "policy": "Strong Feature-Aware Heuristic",
+          "n": 84,
+          "recovery_rate": 0.119048,
+          "recovered_count": 10,
+          "total_net_value": 9384.69,
+          "avg_net_value": 111.7225,
+          "total_action_cost": 59.0,
+          "total_recovered_amount": 9443.69,
+          "action_distribution": {
+            "send_reminder": 64,
+            "recovery_link": 8,
+            "payment_method_update": 3,
+            "retry_later": 9
+          }
+        },
+        "recoveros": {
+          "policy": "RecoverOS ML Policy",
+          "n": 84,
+          "recovery_rate": 0.190476,
+          "recovered_count": 16,
+          "total_net_value": 15294.3,
+          "avg_net_value": 182.075,
+          "total_action_cost": 295.5,
+          "total_recovered_amount": 15589.8,
+          "action_distribution": {
+            "retry_later": 32,
+            "recovery_link": 17,
+            "payment_method_update": 29,
+            "escalate_human": 6
+          }
+        },
+        "recoveros_vs_baseline": {
+          "abs_net_value_diff": 14789.46,
+          "relative_uplift_pct": 2929.5341,
+          "bootstrap_ci_95": [
+            7047.6275,
+            22692.201
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 15,
+            "Baseline_wins": 69,
+            "ties": 0,
+            "mean_delta": 176.065
+          }
+        },
+        "recoveros_vs_heuristic": {
+          "abs_net_value_diff": 5909.61,
+          "relative_uplift_pct": 62.9708,
+          "bootstrap_ci_95": [
+            1301.289,
+            11072.0852
+          ],
+          "ci_crosses_zero": false,
+          "paired": {
+            "RecoverOS_wins": 8,
+            "Heuristic_wins": 62,
+            "ties": 14,
+            "mean_delta": 70.3525
+          }
+        },
+        "verdict_vs_heuristic": "RecoverOS Wins (statistically significant)"
+      }
+    }
+  }
+}

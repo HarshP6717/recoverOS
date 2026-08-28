@@ -1,0 +1,53 @@
+{
+  "policy_name": "Strong Feature-Aware Heuristic",
+  "n_cases": 1000,
+  "recovered_count": 701,
+  "recovery_rate": 0.701,
+  "total_recovered_amount": 841774.22,
+  "total_action_cost": 1754.5,
+  "total_net_value": 840019.72,
+  "avg_net_value_per_case": 840.01972,
+  "stop_count": 0,
+  "stop_rate": 0.0,
+  "action_distribution": {
+    "retry_later": 613,
+    "payment_method_update": 167,
+    "send_reminder": 64,
+    "recovery_link": 137,
+    "escalate_human": 19
+  },
+  "action_recovery_breakdown": {
+    "escalate_human": {
+      "count": 19,
+      "recovered": 16,
+      "recovery_rate": 0.842105,
+      "total_net_value": 15975.35
+    },
+    "payment_method_update": {
+      "count": 167,
+      "recovered": 125,
+      "recovery_rate": 0.748503,
+      "total_net_value": 151763.19
+    },
+    "recovery_link": {
+      "count": 137,
+      "recovered": 105,
+      "recovery_rate": 0.766423,
+      "total_net_value": 130282.58
+    },
+    "retry_later": {
+      "count": 613,
+      "recovered": 448,
+      "recovery_rate": 0.730832,
+      "total_net_value": 534189.05
+    },
+    "send_reminder": {
+      "count": 64,
+      "recovered": 7,
+      "recovery_rate": 0.109375,
+      "total_net_value": 7809.55
+    }
+  },
+  "avg_predicted_erv": null,
+  "guardrails_triggered_total": null
+}
