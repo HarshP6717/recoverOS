@@ -34,6 +34,8 @@ MODEL_VERSION: str = "recovery_logreg_v1"
 
 # Razorpay Webhook & Test-Mode Client Configuration
 RAZORPAY_TEST_MODE: bool = os.getenv("RAZORPAY_TEST_MODE", "true").lower() in ("true", "1", "yes")
+RAZORPAY_LIVE_EXECUTION: bool = os.getenv("RAZORPAY_LIVE_EXECUTION", "false").lower() in ("true", "1", "yes")
+RAZORPAY_API_BASE_URL: str = os.getenv("RAZORPAY_API_BASE_URL", "https://api.razorpay.com/v1")
 RAZORPAY_KEY_ID: str = os.getenv("RAZORPAY_KEY_ID", "rzp_test_recoveros123")
 RAZORPAY_KEY_SECRET: str = os.getenv("RAZORPAY_KEY_SECRET", "rzp_test_secret_abc456")
 RAZORPAY_WEBHOOK_SECRET: str = os.getenv("RAZORPAY_WEBHOOK_SECRET", "rzp_secret_test_key_12345")

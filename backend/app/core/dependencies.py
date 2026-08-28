@@ -13,8 +13,11 @@ from backend.app.services.action_executor import ActionExecutionSimulator
 from backend.app.services.decision_engine import DecisionEngine
 from backend.app.services.event_service import EventService
 from backend.app.services.guardrails import GuardrailEngine
+from backend.app.services.journey_service import JourneyService
 from backend.app.services.razorpay_adapter import RazorpayAdapter
 from backend.app.services.razorpay_client import RazorpayTestClient
+from backend.app.services.reconciliation_service import ReconciliationService
+from backend.app.services.recovery_orchestrator import RecoveryOrchestrator
 
 # Global singleton instances
 _guardrail_engine = GuardrailEngine()
@@ -24,6 +27,17 @@ _action_executor = ActionExecutionSimulator(razorpay_client=_razorpay_client)
 _event_service = EventService(
     decision_engine=_decision_engine,
     action_executor=_action_executor,
+)
+_journey_service = JourneyService()
+_recovery_orchestrator = RecoveryOrchestrator(
+    journey_service=_journey_service,
+    event_service=_event_service,
+    decision_engine=_decision_engine,
+    action_executor=_action_executor,
+)
+_reconciliation_service = ReconciliationService(
+    journey_service=_journey_service,
+    razorpay_client=_razorpay_client,
 )
 _razorpay_adapter = RazorpayAdapter()
 
@@ -56,6 +70,37 @@ def get_event_service(
 ) -> EventService:
     """Provides the EventService instance using injected DecisionEngine and ActionExecutor."""
     return EventService(decision_engine=decision_engine, action_executor=action_executor)
+
+
+def get_journey_service() -> JourneyService:
+    """Provides the JourneyService instance."""
+    return _journey_service
+
+
+def get_recovery_orchestrator(
+    journey_service: JourneyService = Depends(get_journey_service),
+    event_service: EventService = Depends(get_event_service),
+    decision_engine: DecisionEngine = Depends(get_decision_engine),
+    action_executor: ActionExecutionSimulator = Depends(get_action_executor),
+) -> RecoveryOrchestrator:
+    """Provides the RecoveryOrchestrator instance."""
+    return RecoveryOrchestrator(
+        journey_service=journey_service,
+        event_service=event_service,
+        decision_engine=decision_engine,
+        action_executor=action_executor,
+    )
+
+
+def get_reconciliation_service(
+    journey_service: JourneyService = Depends(get_journey_service),
+    razorpay_client: RazorpayTestClient = Depends(get_razorpay_client),
+) -> ReconciliationService:
+    """Provides the ReconciliationService instance."""
+    return ReconciliationService(
+        journey_service=journey_service,
+        razorpay_client=razorpay_client,
+    )
 
 
 def get_razorpay_adapter() -> RazorpayAdapter:

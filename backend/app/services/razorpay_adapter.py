@@ -28,12 +28,21 @@ logger = logging.getLogger(__name__)
 class RazorpayAdapter:
     """Adapter for verifying and normalizing Razorpay webhook payloads."""
 
-    SUPPORTED_EVENTS = {
+    FAILURE_EVENTS = {
         "payment.failed",
         "subscription.halted",
         "subscription.pending",
         "invoice.payment_failed",
     }
+
+    SETTLEMENT_EVENTS = {
+        "payment_link.paid",
+        "payment.captured",
+        "subscription.charged",
+        "payment_link.cancelled",
+    }
+
+    SUPPORTED_EVENTS = FAILURE_EVENTS | SETTLEMENT_EVENTS
 
     def __init__(self, secret: str = RAZORPAY_WEBHOOK_SECRET):
         self.secret = secret
@@ -70,8 +79,16 @@ class RazorpayAdapter:
             return False
 
     def is_supported_event(self, event_type: str) -> bool:
-        """Checks if event_type is a recognized failure event."""
+        """Checks if event_type is a recognized webhook event."""
         return event_type in self.SUPPORTED_EVENTS
+
+    def is_failure_event(self, event_type: str) -> bool:
+        """Checks if event_type is an inbound failure trigger."""
+        return event_type in self.FAILURE_EVENTS
+
+    def is_settlement_event(self, event_type: str) -> bool:
+        """Checks if event_type is a closed-loop settlement trigger."""
+        return event_type in self.SETTLEMENT_EVENTS
 
     def normalize_failure_type(self, error_code: Optional[str], error_desc: Optional[str]) -> str:
         """

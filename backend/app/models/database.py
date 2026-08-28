@@ -135,6 +135,74 @@ class ActionExecutionModel(Base):
             return {}
 
 
+class RecoveryJourneyModel(Base):
+    """
+    SQLAlchemy model tracking stateful multi-round recovery journeys.
+    Maintains journey progression, active actions, payment links, and financial metrics.
+    """
+
+    __tablename__ = "recovery_journeys"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    journey_id = Column(String(64), unique=True, nullable=False, index=True)
+    transaction_id = Column(String(128), nullable=False, index=True)
+    customer_id = Column(String(128), nullable=True, index=True)
+    subscription_id = Column(String(128), nullable=True, index=True)
+    amount = Column(Float, nullable=False)
+    payment_method = Column(String(32), nullable=False)
+    failure_type = Column(String(64), nullable=False)
+
+    current_round = Column(Integer, nullable=False, default=1)
+    status = Column(String(32), nullable=False, default="IN_PROGRESS")  # IN_PROGRESS, RECOVERED, STOPPED, ESCALATED, EXHAUSTED
+    termination_reason = Column(String(64), nullable=True)  # RECOVERED, STOP_ACTION, ESCALATE_ACTION, MAX_ROUNDS_REACHED
+
+    active_action = Column(String(32), nullable=True)
+    active_payment_link_id = Column(String(64), nullable=True)
+    active_payment_link_url = Column(Text, nullable=True)
+
+    cumulative_cost = Column(Float, nullable=False, default=0.0)
+    recovered_amount = Column(Float, nullable=False, default=0.0)
+    net_value = Column(Float, nullable=False, default=0.0)
+
+    contact_count = Column(Integer, nullable=False, default=0)
+    days_overdue = Column(Float, nullable=False, default=0.0)
+
+    created_at = Column(
+        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    updated_at = Column(
+        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc)
+    )
+
+    @property
+    def is_terminal(self) -> bool:
+        return self.status in {"RECOVERED", "STOPPED", "ESCALATED", "EXHAUSTED"}
+
+    def to_dict(self) -> dict:
+        return {
+            "journey_id": self.journey_id,
+            "transaction_id": self.transaction_id,
+            "customer_id": self.customer_id,
+            "subscription_id": self.subscription_id,
+            "amount": self.amount,
+            "payment_method": self.payment_method,
+            "failure_type": self.failure_type,
+            "current_round": self.current_round,
+            "status": self.status,
+            "termination_reason": self.termination_reason,
+            "active_action": self.active_action,
+            "active_payment_link_id": self.active_payment_link_id,
+            "active_payment_link_url": self.active_payment_link_url,
+            "cumulative_cost": self.cumulative_cost,
+            "recovered_amount": self.recovered_amount,
+            "net_value": self.net_value,
+            "contact_count": self.contact_count,
+            "days_overdue": self.days_overdue,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }
+
+
 # Engine and Session factory
 def create_db_engine(db_url: str = DATABASE_URL):
     # SQLite requires check_same_thread=False for multithreaded FastAPI requests
