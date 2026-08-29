@@ -28,6 +28,19 @@ class ActionCandidateEvaluation(BaseModel):
     )
 
 
+class CounterfactualData(BaseModel):
+    """Structured data comparing the selected action to the next best alternative."""
+    
+    selected_action: str
+    selected_erv: float
+    selected_probability: float
+    counterfactual_action: str
+    counterfactual_erv: float
+    counterfactual_probability: float
+    value_difference: float = Field(..., description="Selected ERV minus Counterfactual ERV")
+    guardrails_applied: List[str] = Field(default_factory=list)
+
+
 class DiagnosisRequest(BaseModel):
     """Input payload for recovery diagnosis (dry-run without ledger persistence)."""
 
@@ -114,7 +127,7 @@ class ExecutionResponse(BaseModel):
     selected_action: str = Field(..., description="Executed recovery action")
     execution_status: str = Field(
         ...,
-        description="Execution status: SUCCESS, SIMULATED_RECOVERED, SIMULATED_PENDING, STOPPED, DEGRADED_FALLBACK, EXECUTION_FAILED",
+        description="Execution status: SUCCESS, SIMULATED_RECOVERED, SIMULATED_PENDING, STOPPED, DEGRADED_FALLBACK, EXECUTION_FAILED, EXECUTION_UNKNOWN",
     )
     execution_timestamp: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc), description="Timestamp of execution"
@@ -141,6 +154,7 @@ class DecisionResponse(BaseModel):
     decision_reason: str
     guardrails_triggered: List[str]
     candidate_evaluations: List[ActionCandidateEvaluation]
+    counterfactuals: Optional[CounterfactualData] = None
     model_version: str
     timestamp: datetime
     audit_persisted: bool = Field(default=True, description="Whether audit ledger record was saved")
@@ -193,6 +207,7 @@ class RecoveryEventAuditRecord(BaseModel):
     model_version: str
     guardrails_triggered: List[str]
     candidate_evaluations: List[ActionCandidateEvaluation]
+    counterfactuals: Optional[CounterfactualData] = None
     raw_payload: Optional[Dict[str, Any]] = None
     created_at: datetime
     executions: List[ActionExecutionAuditRecord] = Field(default_factory=list)

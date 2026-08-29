@@ -3,6 +3,7 @@ Tests for Razorpay Webhook Ingestion, Signature Verification, and Atomic Idempot
 """
 
 import json
+import time
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -183,7 +184,7 @@ def test_webhook_payment_link_paid_http_route(
                 }
             },
         },
-        "created_at": 1700000000,
+        "created_at": int(time.time()),
     }
 
     raw_body = json.dumps(payload).encode("utf-8")
@@ -251,7 +252,7 @@ def test_webhook_payment_captured_http_route(
                 }
             }
         },
-        "created_at": 1700000000,
+        "created_at": int(time.time()),
     }
 
     raw_body = json.dumps(payload).encode("utf-8")
@@ -312,7 +313,7 @@ def test_webhook_subscription_charged_http_route(
                 }
             },
         },
-        "created_at": 1700000000,
+        "created_at": int(time.time()),
     }
 
     raw_body = json.dumps(payload).encode("utf-8")
@@ -358,7 +359,7 @@ def test_webhook_unmatched_settlement_http_route(
                 }
             }
         },
-        "created_at": 1700000000,
+        "created_at": int(time.time()),
     }
 
     raw_body = json.dumps(payload).encode("utf-8")
@@ -372,7 +373,7 @@ def test_webhook_unmatched_settlement_http_route(
     response = client.post("/v1/webhooks/razorpay", content=raw_body, headers=headers)
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "unmatched"
+    assert data["status"] == "pending_settlement"
     assert "No matching recovery journey found" in data["message"]
 
     # Verify no journeys exist

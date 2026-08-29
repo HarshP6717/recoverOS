@@ -27,9 +27,10 @@ from backend.app.schemas.recovery import DecisionRequest, DecisionResponse, Exec
 from backend.app.services.action_executor import ActionExecutionSimulator
 from backend.app.services.decision_engine import DecisionEngine
 from backend.app.services.event_service import EventService
-from backend.app.services.journey_service import JourneyService
+from backend.app.services.journey_service import JourneyService, MAX_HORIZON_ROUNDS
+from backend.app.core.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 @dataclass
@@ -104,15 +105,52 @@ class RecoveryOrchestrator:
             contact_count=request.contact_count,
         )
 
+        logger.info("Starting recovery orchestration", 
+            journey_id=journey.journey_id, 
+            transaction_id=journey.transaction_id,
+            status=journey.status
+        )
+
         # 2. Terminal State Check: If already terminal, do not execute further actions
         if journey.is_terminal:
-            logger.info(f"Journey {journey.journey_id} is in terminal state '{journey.status}'. Skipping execution.")
+            logger.info("Recovery journey terminated during orchestration", 
+                journey_id=journey.journey_id, 
+                reason=journey.termination_reason
+            )
             return OrchestrationResult(
                 journey=journey,
                 decision=None,
                 execution=None,
                 status=journey.status,
                 message=f"Journey is already in terminal state '{journey.status}'. No further recovery actions executed.",
+            )
+
+        # 2b. P1-6: Enforce round horizon cap in the webhook processing path.
+        # If a journey is at or beyond MAX_HORIZON_ROUNDS when a new failure arrives,
+        # auto-exhaust it rather than silently processing another action without
+        # transitioning. The external advance_round endpoint would normally do this,
+        # but we cannot guarantee it was called before the next failure webhook.
+        if journey.current_round >= MAX_HORIZON_ROUNDS:
+            logger.info(
+                "Journey %s has reached round %d (MAX=%d) on a new failure. "
+                "Auto-exhausting without further action.",
+                journey.journey_id,
+                journey.current_round,
+                MAX_HORIZON_ROUNDS,
+            )
+            try:
+                journey = self.journey_service.mark_exhausted(db, journey.journey_id)
+            except ValueError:
+                pass  # Already exhausted by a concurrent call
+            return OrchestrationResult(
+                journey=journey,
+                decision=None,
+                execution=None,
+                status="EXHAUSTED",
+                message=(
+                    f"Journey has reached the maximum recovery horizon of {MAX_HORIZON_ROUNDS} rounds. "
+                    f"Journey exhausted. No further automated actions will be taken."
+                ),
             )
 
         # 3. Synchronize request attributes with authoritative journey state

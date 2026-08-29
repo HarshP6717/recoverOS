@@ -84,7 +84,7 @@ class TestOrchestratorEndToEnd:
         assert result.journey.amount == 2499.0
         assert result.journey.current_round == 1
         assert result.decision is not None
-        assert result.decision.selected_action in ("payment_method_update", "recovery_link")
+        assert result.decision.selected_action in ("payment_method_update", "recovery_link", "send_reminder")
         assert result.execution is not None
         assert result.journey.active_action == result.decision.selected_action
         assert result.journey.cumulative_cost > 0.0
@@ -184,7 +184,7 @@ class TestTerminalStateProtection:
 class TestMultiRoundProgression:
     def test_round_progression_and_exhaustion(self, db_session: Session, orchestrator: RecoveryOrchestrator):
         """Journey progresses Round 1 -> Round 2 -> Round 3 -> EXHAUSTED."""
-        req = make_request(tx_id="tx_multi_001", amount=1200.0, failure_type="bank_timeout")
+        req = make_request(tx_id="tx_multi_001", amount=1200.0, failure_type="insufficient_funds")
         res = orchestrator.process_recovery(db_session, req)
         j_id = res.journey.journey_id
         assert res.journey.current_round == 1

@@ -80,4 +80,6 @@ def test_razorpay_client_create_customer_update_session():
     )
     assert session["session_id"].startswith("sess_update_")
     assert session["status"] == "active"
-    assert "https://recoveros.app/update-method/" in session["update_url"]
+    # P2-2: URL changed from non-existent recoveros.app to localhost placeholder
+    assert "http://localhost:8000/update-method/" in session["update_url"]
+    assert "[SIMULATED]" in session["update_url"]

@@ -145,7 +145,7 @@ class ActionExecutionSimulator:
                 event_id=event_id,
                 transaction_id=transaction_id,
                 selected_action=action,
-                execution_status="EXECUTION_FAILED",
+                execution_status="EXECUTION_UNKNOWN",
                 execution_timestamp=now,
                 simulated_response={"gateway": "razorpay_test_mode", "error_type": "GATEWAY_TIMEOUT"},
                 error_code="GATEWAY_TIMEOUT",

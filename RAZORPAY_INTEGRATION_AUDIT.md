@@ -39,7 +39,7 @@ This audit evaluates the genuine capabilities of the **Razorpay API and Webhook 
 ## 3. Razorpay API Capabilities in Test Mode
 
 ### A. Hosted Payment Links API (`/v1/payment_links`)
-- **Real Test-Mode Execution:** **100% GENUINE & SUPPORTED.**
+- **Integration Status:** **Implemented & Code-Complete** (Simulated locally by default; executable against live Razorpay Test Mode REST API when `RAZORPAY_LIVE_EXECUTION=true`).
 - **Endpoint:** `POST https://api.razorpay.com/v1/payment_links`
 - **Authentication:** Basic Auth (`key_id` : `key_secret`).
 - **Request Payload:**
@@ -68,10 +68,10 @@ This audit evaluates the genuine capabilities of the **Razorpay API and Webhook 
   }
   ```
 - **Response Payload:** Contains genuine hosted short URL `https://rzp.io/i/{id}`.
-- **Interactive Test Execution:** A judge or developer can open the generated URL in any browser, select **Test Mode Cards / Test UPI (success@razorpay)**, submit the payment, and observe Razorpay firing real `payment_link.paid` and `payment.captured` webhooks back to RecoverOS.
+- **Interactive Test Execution:** When live mode is enabled, a judge or developer can open the generated URL in any browser, select **Test Mode Cards / Test UPI (success@razorpay)**, submit the payment, and observe Razorpay firing real `payment_link.paid` and `payment.captured` webhooks back to RecoverOS. See [LIVE_MODE.md](LIVE_MODE.md) for live verification instructions.
 
 ### B. Payment Link Cancellation API (`/v1/payment_links/{id}/cancel`)
-- **Real Test-Mode Execution:** **100% GENUINE & SUPPORTED.**
+- **Integration Status:** **Implemented & Code-Complete** (Simulated locally by default; executable live against `api.razorpay.com` when `RAZORPAY_LIVE_EXECUTION=true`).
 - **Endpoint:** `POST https://api.razorpay.com/v1/payment_links/{plink_id}/cancel`
 - **Role:** When a customer pays via an alternate method, or when the policy selects `stop`, RecoverOS immediately calls this API to cancel open links, preventing double-billing.
 
@@ -112,11 +112,11 @@ Create RecoveryJourney (journey_id: jrn_001)
 
 ## 5. Summary of Integration Capabilities
 
-| Component | Status in RecoverOS | Production vs Test Mode |
+| Component | Status in RecoverOS | Execution Environment |
 |---|---|---|
-| Inbound Webhook Gateway | **Live & Operational** | Verifies genuine Razorpay HMAC-SHA256 signatures |
-| Hosted Payment Links API | **Live & Operational** | Real API calls generating valid `rzp.io` checkout links |
-| Link Cancellation API | **Live & Operational** | Real API calls preventing double-charge |
-| Atomic Idempotency Filter | **Live & Operational** | Database UNIQUE constraint eliminating duplicate deliveries |
-| Sequential State Engine | **Validated in Step 4** | 3-round bounded horizon with contact fatigue tracking |
-| Out-of-Order Closed Loop | **Architected for Phase 3** | Automatic cancellation of dunning upon payment capture |
+| Inbound Webhook Gateway | **Implemented & Active** | Verifies genuine Razorpay HMAC-SHA256 signatures |
+| Hosted Payment Links API | **Implemented & Code-Complete** | Deterministic simulation by default; live `rzp.io` creation via `RAZORPAY_LIVE_EXECUTION=true` |
+| Link Cancellation API | **Implemented & Code-Complete** | Deterministic simulation by default; live cancellation via `RAZORPAY_LIVE_EXECUTION=true` |
+| Atomic Idempotency Filter | **Implemented & Active** | Database UNIQUE constraint eliminating duplicate deliveries |
+| Sequential State Engine | **Validated in Pipeline** | 3-round bounded horizon with contact fatigue tracking |
+| Out-of-Order Closed Loop | **Implemented & Active** | Automatic cancellation of dunning upon payment capture |

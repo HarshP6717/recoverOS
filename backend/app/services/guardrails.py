@@ -34,6 +34,7 @@ class GuardrailEngine:
         "hard_decline",
         "expired_card",
         "invalid_payment_method",
+        "subscription_halted",
     }
 
     def evaluate_candidates(
@@ -114,8 +115,14 @@ class GuardrailEngine:
                 )
                 triggered_guardrails.add("G4_CUSTOMER_FATIGUE_CAP")
 
+            # Guardrail G6: Halted Subscription Safety (P0-2)
+            elif failure_type == "subscription_halted" and action in {"retry_now", "retry_later", "recovery_link"}:
+                allowed = False
+                reason = "G6: Generic recovery actions blocked on halted subscription. Requires payment update or human escalation."
+                triggered_guardrails.add("G6_HALTED_SUBSCRIPTION_SAFETY")
+
             # Guardrail G1: Negative or zero Expected Recovery Value
-            elif erv <= 0.0:
+            elif erv <= 0.0 and action != "escalate_human":
                 allowed = False
                 reason = "G1: Negative or zero expected recovery value (ERV <= 0)"
                 triggered_guardrails.add("G1_NEGATIVE_ERV")
@@ -171,7 +178,7 @@ class GuardrailEngine:
         # Pick candidate with highest predicted ERV
         best_candidate = max(non_stop_allowed, key=lambda c: c.predicted_erv)
 
-        if best_candidate.predicted_erv <= 0.0:
+        if best_candidate.predicted_erv <= 0.0 and best_candidate.action != "escalate_human":
             return (
                 "stop",
                 "SUPPRESSED_STOP",

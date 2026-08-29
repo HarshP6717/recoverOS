@@ -1,0 +1,187 @@
+{
+  "timestamp": "2026-08-29T09:51:23.218504+00:00",
+  "scenarios_tested": 18,
+  "all_passed": true,
+  "results": [
+    {
+      "scenario_id": "01",
+      "scenario": "Razorpay timeout on creation",
+      "pass": true,
+      "actual_result": "Execution status: EXECUTION_UNKNOWN",
+      "state_transition": "INIT -> EXECUTION_UNKNOWN",
+      "financial_impact": "No link created, no double charge",
+      "retryability": "Can be reconciled or manually reviewed",
+      "details": {}
+    },
+    {
+      "scenario_id": "02",
+      "scenario": "Razorpay 5xx on creation",
+      "pass": true,
+      "actual_result": "Execution status: EXECUTION_FAILED",
+      "state_transition": "INIT -> EXECUTION_FAILED",
+      "financial_impact": "No link created",
+      "retryability": "Safe to retry immediately",
+      "details": {}
+    },
+    {
+      "scenario_id": "03",
+      "scenario": "Razorpay timeout on cancellation",
+      "pass": true,
+      "actual_result": "cancellation_pending=True, status=reconciled",
+      "state_transition": "IN_PROGRESS -> RECOVERED (with pending cancellation)",
+      "financial_impact": "Double charge risk flagged for manual intervention",
+      "retryability": "Requires manual reconciliation/cancellation",
+      "details": {}
+    },
+    {
+      "scenario_id": "04",
+      "scenario": "Duplicate webhook delivery",
+      "pass": true,
+      "actual_result": "R1 status=processed, R2 status=duplicate_ignored, recovered=1000.0",
+      "state_transition": "RECOVERED -> RECOVERED",
+      "financial_impact": "No double counting of revenue",
+      "retryability": "Deduplicated",
+      "details": {}
+    },
+    {
+      "scenario_id": "05",
+      "scenario": "Concurrent duplicate webhook delivery",
+      "pass": true,
+      "actual_result": "T1 Reserved: True, T2 Reserved: False",
+      "state_transition": "RESERVED -> Rejected (Duplicate)",
+      "financial_impact": "Prevents concurrent double processing",
+      "retryability": "Idempotent via DB constraint",
+      "details": {}
+    },
+    {
+      "scenario_id": "06",
+      "scenario": "Invalid HMAC",
+      "pass": true,
+      "actual_result": "HTTP 401",
+      "state_transition": "None",
+      "financial_impact": "No DB mutation",
+      "retryability": "N/A",
+      "details": {}
+    },
+    {
+      "scenario_id": "07",
+      "scenario": "Missing HMAC",
+      "pass": true,
+      "actual_result": "HTTP 401",
+      "state_transition": "None",
+      "financial_impact": "No DB mutation",
+      "retryability": "N/A",
+      "details": {}
+    },
+    {
+      "scenario_id": "08",
+      "scenario": "Replayed webhook",
+      "pass": true,
+      "actual_result": "R1 status=processed, R2 status=duplicate_ignored, recovered=1000.0",
+      "state_transition": "RECOVERED -> RECOVERED",
+      "financial_impact": "No double counting of revenue",
+      "retryability": "Deduplicated",
+      "details": {}
+    },
+    {
+      "scenario_id": "09",
+      "scenario": "LLM unavailable",
+      "pass": true,
+      "actual_result": "Status: FALLBACK_SAFE, Action: escalate_human",
+      "state_transition": "INIT -> FALLBACK_SAFE",
+      "financial_impact": "No automated action taken, safe escalation",
+      "retryability": "Human intervention required",
+      "details": {}
+    },
+    {
+      "scenario_id": "10",
+      "scenario": "Malformed LLM response",
+      "pass": true,
+      "actual_result": "Status: FALLBACK_SAFE, Action: escalate_human",
+      "state_transition": "INIT -> FALLBACK_SAFE",
+      "financial_impact": "No automated action taken, safe escalation",
+      "retryability": "Human intervention required",
+      "details": {}
+    },
+    {
+      "scenario_id": "11",
+      "scenario": "Unknown settlement identifier",
+      "pass": true,
+      "actual_result": "Status: pending_settlement",
+      "state_transition": "None",
+      "financial_impact": "Orphaned settlement (requires manual investigation)",
+      "retryability": "Can be replayed later",
+      "details": {}
+    },
+    {
+      "scenario_id": "12",
+      "scenario": "Settlement before action finishes",
+      "pass": true,
+      "actual_result": "Status: reconciled, Journey Status: RECOVERED",
+      "state_transition": "IN_PROGRESS -> RECOVERED",
+      "financial_impact": "Correctly reconciled",
+      "retryability": "Idempotent",
+      "details": {}
+    },
+    {
+      "scenario_id": "13",
+      "scenario": "STOPPED journey receiving settlement",
+      "pass": true,
+      "actual_result": "Status: terminal_state_conflict, Journey Status: STOPPED",
+      "state_transition": "STOPPED -> STOPPED",
+      "financial_impact": "Manual review required, no auto override",
+      "retryability": "Requires manual override",
+      "details": {}
+    },
+    {
+      "scenario_id": "14",
+      "scenario": "ESCALATED journey receiving settlement",
+      "pass": true,
+      "actual_result": "Status: terminal_state_conflict",
+      "state_transition": "ESCALATED -> ESCALATED",
+      "financial_impact": "Manual review required",
+      "retryability": "Requires manual override",
+      "details": {}
+    },
+    {
+      "scenario_id": "15",
+      "scenario": "EXHAUSTED journey legitimate late settlement",
+      "pass": true,
+      "actual_result": "Status: reconciled, Journey Status: RECOVERED",
+      "state_transition": "EXHAUSTED -> RECOVERED",
+      "financial_impact": "Legitimate late revenue recognized",
+      "retryability": "Idempotent",
+      "details": {}
+    },
+    {
+      "scenario_id": "16",
+      "scenario": "payment_link.cancelled event",
+      "pass": true,
+      "actual_result": "Status: ignored_cancellation",
+      "state_transition": "None",
+      "financial_impact": "No false settlement",
+      "retryability": "Ignored",
+      "details": {}
+    },
+    {
+      "scenario_id": "17",
+      "scenario": "Invalid/NaN/Infinity amount",
+      "pass": true,
+      "actual_result": "Status: invalid_amount, Msg: Invalid amount in settlement payload: raw_paise=nan. Settlement amount is NaN \u2014 malformed payload rejected.",
+      "state_transition": "None",
+      "financial_impact": "Rejected malformed payload",
+      "retryability": "Fix payload",
+      "details": {}
+    },
+    {
+      "scenario_id": "18",
+      "scenario": "Database failure during processing",
+      "pass": true,
+      "actual_result": "Raised exception: OperationalError",
+      "state_transition": "Rollback",
+      "financial_impact": "No partial state committed",
+      "retryability": "Safe to retry when DB recovers",
+      "details": {}
+    }
+  ]
+}

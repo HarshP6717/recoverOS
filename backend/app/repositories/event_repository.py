@@ -64,6 +64,14 @@ def record_recovery_event(
         if isinstance(event_data.get("raw_payload"), dict)
         else event_data.get("raw_payload")
     )
+    
+    counterfactual_json = None
+    if event_data.get("counterfactual_data"):
+        counterfactual_json = (
+            json.dumps(event_data["counterfactual_data"])
+            if isinstance(event_data["counterfactual_data"], dict)
+            else event_data["counterfactual_data"]
+        )
 
     model_record = RecoveryEventModel(
         event_id=event_data["event_id"],
@@ -90,6 +98,7 @@ def record_recovery_event(
         model_version=event_data["model_version"],
         guardrails_triggered=guardrails_json,
         candidate_evaluations=candidates_json,
+        counterfactual_data=counterfactual_json,
         raw_payload=raw_payload_json,
         created_at=event_data.get("timestamp"),
     )
@@ -135,6 +144,14 @@ def reserve_webhook_event_atomic(
     Atomically attempts to insert a webhook reservation record using the database
     UNIQUE constraint on `webhook_event_id`.
 
+    Two-phase lifecycle (P1-1):
+    - Inserts with webhook_status='RESERVED' to signal that business processing has started.
+    - The caller must call mark_webhook_processed() once business processing succeeds.
+    - If a process crashes after RESERVED but before PROCESSED, the event remains RESERVED.
+      This is detectable for retry/alerting purposes.
+    - A second delivery with the same webhook_event_id is safely rejected by the UNIQUE
+      constraint regardless of the current webhook_status.
+
     Parameters
     ----------
     db : Session
@@ -153,19 +170,60 @@ def reserve_webhook_event_atomic(
     webhook_record = ProcessedWebhookModel(
         webhook_event_id=webhook_event_id,
         event_type=event_type,
+        webhook_status="RESERVED",  # Two-phase: will be updated to PROCESSED on success
     )
     try:
         db.add(webhook_record)
         db.commit()
+        logger.debug(
+            "Webhook event reserved: webhook_event_id=%s event_type=%s",
+            webhook_event_id,
+            event_type,
+        )
         return True
     except IntegrityError:
         db.rollback()
-        logger.info(f"Duplicate webhook delivery detected for webhook_event_id={webhook_event_id}")
+        logger.info(
+            "Duplicate webhook delivery detected: webhook_event_id=%s", webhook_event_id
+        )
         return False
     except Exception as e:
         db.rollback()
-        logger.error(f"Error during webhook atomic reservation: {e}")
+        logger.error("Error during webhook atomic reservation: %s", e)
         raise
+
+
+def mark_webhook_processed(
+    db: Session,
+    webhook_event_id: str,
+    recovery_event_id: Optional[str] = None,
+) -> None:
+    """
+    Transitions a webhook record from RESERVED to PROCESSED (P1-1).
+
+    Called after business processing completes successfully. If this call is
+    skipped (e.g. due to a crash), the record remains RESERVED, which is
+    detectable for operational monitoring.
+    """
+    try:
+        record = (
+            db.query(ProcessedWebhookModel)
+            .filter(ProcessedWebhookModel.webhook_event_id == webhook_event_id)
+            .first()
+        )
+        if record:
+            record.webhook_status = "PROCESSED"
+            if recovery_event_id:
+                record.recovery_event_id = recovery_event_id
+            db.commit()
+            logger.debug(
+                "Webhook event marked PROCESSED: webhook_event_id=%s", webhook_event_id
+            )
+    except Exception as e:
+        db.rollback()
+        logger.warning(
+            "Failed to mark webhook PROCESSED for %s: %s", webhook_event_id, e
+        )
 
 
 def attach_recovery_event_to_webhook(

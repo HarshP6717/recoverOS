@@ -136,3 +136,38 @@ def test_all_actions_suppressed_selects_stop():
     assert selected_action == "stop"
     assert status == "SUPPRESSED_STOP"
     assert "STOP selected" in reason
+
+
+def test_low_ai_confidence_escalates_human_even_with_negative_erv(client: TestClient):
+    """
+    Verify that when AI confidence is low (< 0.60), the system escalates to a human
+    even if the raw ERV for escalate_human is negative, rather than dropping the case to STOP.
+    """
+    payload = {
+        "transaction_id": "tx_low_conf_001",
+        "customer_id": "cust_low_conf_001",
+        "subscription_id": "sub_low_conf_001",
+        "amount": 200.0,
+        "payment_method": "card",
+        "failure_type": "expired_card",
+        "attempt_number": 1,
+        "days_overdue": 1,
+        "previous_payment_count": 0,
+        "previous_success_count": 0,
+        "previous_failure_count": 99,
+        "previous_recovery_count": 0,
+        "customer_lifetime_value": 200.0,
+        "contact_count": 0,
+    }
+    response = client.post("/v1/recover/decision", json=payload)
+    assert response.status_code == 201
+    data = response.json()
+
+    assert data["selected_action"] == "escalate_human"
+    assert "LOW_AI_CONFIDENCE" in data["guardrails_triggered"]
+    assert "G1_NEGATIVE_ERV" not in data["guardrails_triggered"]
+
+    candidates = {c["action"]: c for c in data["candidate_evaluations"]}
+    assert candidates["escalate_human"]["allowed"] is True
+    assert candidates["escalate_human"]["predicted_erv"] < 0.0
+

@@ -19,6 +19,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    UniqueConstraint,
     create_engine,
 )
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
@@ -62,6 +63,7 @@ class RecoveryEventModel(Base):
 
     guardrails_triggered = Column(Text, nullable=False, default="[]")
     candidate_evaluations = Column(Text, nullable=False, default="[]")
+    counterfactual_data = Column(Text, nullable=True)
     raw_payload = Column(Text, nullable=True)
 
     created_at = Column(
@@ -80,6 +82,12 @@ class RecoveryEventModel(Base):
         except Exception:
             return []
 
+    def get_counterfactual_dict(self) -> Optional[dict]:
+        try:
+            return json.loads(self.counterfactual_data) if self.counterfactual_data else None
+        except Exception:
+            return None
+
     def get_raw_payload_dict(self) -> dict:
         try:
             return json.loads(self.raw_payload) if self.raw_payload else {}
@@ -91,6 +99,15 @@ class ProcessedWebhookModel(Base):
     """
     SQLAlchemy model tracking processed external webhooks.
     Database UNIQUE constraint on webhook_event_id enforces atomic idempotency.
+
+    Two-phase lifecycle:
+      webhook_status='RESERVED' — event accepted; business processing started.
+      webhook_status='PROCESSED' — business processing completed successfully.
+
+    If a process crashes after RESERVED but before PROCESSED, the event remains
+    RESERVED and can be retried. A second delivery with a RESERVED status
+    indicates an in-flight duplicate and is still safely deduplicated by the
+    UNIQUE constraint.
     """
 
     __tablename__ = "processed_webhooks"
@@ -98,10 +115,40 @@ class ProcessedWebhookModel(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     webhook_event_id = Column(String(128), unique=True, nullable=False, index=True)
     event_type = Column(String(64), nullable=False)
+    # Two-phase lifecycle: RESERVED -> PROCESSED
+    webhook_status = Column(String(16), nullable=False, default="PROCESSED")
     recovery_event_id = Column(String(64), nullable=True)
     processed_at = Column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
+
+
+class PendingSettlementModel(Base):
+    """
+    SQLAlchemy model tracking out-of-order settlements.
+    When a settlement webhook arrives before the failure webhook, it is stored here.
+    When the RecoveryJourney is subsequently created, it claims the settlement atomically
+    and prevents dunning.
+    """
+
+    __tablename__ = "pending_settlements"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    transaction_id = Column(String(128), nullable=False, index=True)
+    payment_link_id = Column(String(64), nullable=True)
+    subscription_id = Column(String(128), nullable=True)
+    amount_inr = Column(Float, nullable=False)
+    event_type = Column(String(64), nullable=False)
+    webhook_event_id = Column(String(128), unique=True, nullable=False)
+    
+    # State tracking
+    status = Column(String(16), nullable=False, default="PENDING")  # PENDING, CLAIMED
+    claimed_by_journey_id = Column(String(64), nullable=True)
+    
+    created_at = Column(
+        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    claimed_at = Column(DateTime, nullable=True)
 
 
 class ActionExecutionModel(Base):
@@ -139,9 +186,16 @@ class RecoveryJourneyModel(Base):
     """
     SQLAlchemy model tracking stateful multi-round recovery journeys.
     Maintains journey progression, active actions, payment links, and financial metrics.
+
+    INVARIANT: transaction_id is unique across all journeys.
+    Enforced at the DB level via UniqueConstraint; JourneyService handles IntegrityError
+    with a read-retry (upsert pattern) to prevent duplicate journeys under concurrency.
     """
 
     __tablename__ = "recovery_journeys"
+    __table_args__ = (
+        UniqueConstraint("transaction_id", name="uq_journey_transaction_id"),
+    )
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     journey_id = Column(String(64), unique=True, nullable=False, index=True)

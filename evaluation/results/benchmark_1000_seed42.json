@@ -1,0 +1,107 @@
+{
+  "benchmark_metadata": {
+    "timestamp": "2026-08-29T19:17:07.795312+00:00",
+    "scenarios": 1000,
+    "seed": 42,
+    "evaluation_type": "Deterministic synthetic evaluation",
+    "erv_version": "v2_friction_adjusted"
+  },
+  "scenario_configuration": {
+    "num_scenarios": 1000,
+    "failure_types_distribution": {
+      "insufficient_funds": 0.5,
+      "bank_timeout": 0.3,
+      "fraud_suspected": 0.05,
+      "hard_decline": 0.15
+    }
+  },
+  "hidden_ground_truth_description": "Uses simulator.recovery_simulator.compute_ground_truth_recovery_probability to generate outcomes based on an isolated seed per scenario and action, ensuring policy predictions do not determine success.",
+  "baseline_results": {
+    "policy": "baseline_retry_3x",
+    "total_risk": 2480982.59,
+    "recovered_amount": 419399.3400000002,
+    "recovery_rate": 0.16904566025189247,
+    "direct_cost": 740.0,
+    "friction_cost": 1480.0,
+    "net_recovered_value": 417179.3400000002,
+    "escalations": 0,
+    "stops": 260
+  },
+  "recoveros_results": {
+    "policy": "recoveros_erv",
+    "total_risk": 2480982.59,
+    "recovered_amount": 872814.6900000003,
+    "recovery_rate": 0.351802021311242,
+    "direct_cost": 2852.0,
+    "friction_cost": 4562.0,
+    "net_recovered_value": 865400.6900000003,
+    "escalations": 50,
+    "stops": 0,
+    "action_distribution": {
+      "recovery_link": 804,
+      "retry_now": 146,
+      "escalate_human": 50
+    },
+    "average_erv": 1858.48581
+  },
+  "delta": {
+    "net_value_delta": 448221.3500000001,
+    "friction_saved": -3082.0
+  },
+  "per_category_results": {
+    "fraud_suspected": {
+      "count": 50,
+      "baseline_net_value": 15863.52,
+      "recoveros_net_value": 30838.019999999997,
+      "delta": 14974.499999999996
+    },
+    "insufficient_funds": {
+      "count": 503,
+      "baseline_net_value": 73516.08999999998,
+      "recoveros_net_value": 442509.9899999999,
+      "delta": 368993.8999999999
+    },
+    "hard_decline": {
+      "count": 160,
+      "baseline_net_value": -363.0,
+      "recoveros_net_value": 122114.74999999999,
+      "delta": 122477.74999999999
+    },
+    "bank_timeout": {
+      "count": 287,
+      "baseline_net_value": 328162.7299999999,
+      "recoveros_net_value": 269937.9299999999,
+      "delta": -58224.80000000005
+    }
+  },
+  "sensitivity_analysis": {
+    "baseline": {
+      "baseline_net_value": 417179.3400000002,
+      "recoveros_net_value": 865400.6900000003,
+      "delta": 448221.3500000001
+    },
+    "lower_friction": {
+      "baseline_net_value": 417919.3400000002,
+      "recoveros_net_value": 867681.6900000003,
+      "delta": 449762.3500000001
+    },
+    "higher_friction": {
+      "baseline_net_value": 415699.3400000002,
+      "recoveros_net_value": 860838.6900000003,
+      "delta": 445139.3500000001
+    },
+    "lower_escalation_cost": {
+      "baseline_net_value": 417179.3400000002,
+      "recoveros_net_value": 866150.6900000003,
+      "delta": 448971.3500000001
+    },
+    "higher_escalation_cost": {
+      "baseline_net_value": 417179.3400000002,
+      "recoveros_net_value": 863900.6900000003,
+      "delta": 446721.3500000001
+    }
+  },
+  "limitations": "Simulation uses deterministic mock probabilities and synthetic costs.",
+  "reproducibility": "Uses deterministic seeds for scenario generation and simulated outcomes.",
+  "disclaimer": "This is a deterministic synthetic evaluation based on documented simulation assumptions and is not evidence of production Razorpay recovery performance."
+}

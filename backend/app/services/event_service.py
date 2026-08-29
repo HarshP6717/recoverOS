@@ -68,6 +68,7 @@ class EventService:
             decision_status,
             decision_reason,
             guardrails_triggered,
+            counterfactuals,
         ) = self.decision_engine.evaluate_request(request)
 
         # 2. Prepare audit ledger payload
@@ -96,6 +97,7 @@ class EventService:
             "model_version": self.decision_engine.model_version,
             "guardrails_triggered": guardrails_triggered,
             "candidate_evaluations": evaluations,
+            "counterfactual_data": counterfactuals.model_dump() if counterfactuals else None,
             "raw_payload": raw_payload or request.model_dump(),
             "timestamp": now,
         }
@@ -120,6 +122,7 @@ class EventService:
             decision_reason=decision_reason,
             guardrails_triggered=guardrails_triggered,
             candidate_evaluations=evaluations,
+            counterfactuals=counterfactuals,
             model_version=self.decision_engine.model_version,
             timestamp=now,
             audit_persisted=True,
@@ -173,6 +176,7 @@ class EventService:
             decision_reason=event_record.decision_reason,
             guardrails_triggered=event_record.guardrails_triggered,
             candidate_evaluations=event_record.candidate_evaluations,
+            counterfactuals=event_record.counterfactuals,
             model_version=event_record.model_version,
             timestamp=event_record.created_at,
             audit_persisted=True,
@@ -210,6 +214,12 @@ class EventService:
 
         candidates_raw = model_rec.get_candidates_list()
         candidate_evals = [ActionCandidateEvaluation(**c) for c in candidates_raw]
+        
+        counterfactual_dict = model_rec.get_counterfactual_dict()
+        counterfactual_data = None
+        if counterfactual_dict:
+            from backend.app.schemas.recovery import CounterfactualData
+            counterfactual_data = CounterfactualData(**counterfactual_dict)
 
         # Fetch associated executions
         exec_models = get_action_executions_by_event_id(db, event_id)
@@ -256,6 +266,7 @@ class EventService:
             model_version=model_rec.model_version,
             guardrails_triggered=model_rec.get_guardrails_list(),
             candidate_evaluations=candidate_evals,
+            counterfactuals=counterfactual_data,
             raw_payload=model_rec.get_raw_payload_dict(),
             created_at=model_rec.created_at,
             executions=executions,

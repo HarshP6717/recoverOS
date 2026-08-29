@@ -39,7 +39,18 @@ class RazorpayAdapter:
         "payment_link.paid",
         "payment.captured",
         "subscription.charged",
+        # NOTE: payment_link.cancelled is intentionally NOT in SETTLEMENT_EVENTS.
+        # A cancellation is the opposite of a settlement. Including it would cause
+        # ReconciliationService to attempt to mark a journey as RECOVERED upon cancellation.
+        # Cancellations are handled as NEUTRAL_EVENTS (gracefully ignored).
+    }
+
+    # Events that are recognized but require no action (route to ignored_unsupported_event)
+    NEUTRAL_EVENTS = {
         "payment_link.cancelled",
+        "payment.authorized",
+        "refund.created",
+        "payment.dispute.created",
     }
 
     SUPPORTED_EVENTS = FAILURE_EVENTS | SETTLEMENT_EVENTS
@@ -203,6 +214,10 @@ class RazorpayAdapter:
         error_code = payment_data.get("error_code") or payment_data.get("error_reason")
         error_desc = payment_data.get("error_description") or invoice_data.get("status")
         failure_type = self.normalize_failure_type(error_code, error_desc)
+        
+        # P0-2: Explicitly override to subscription_halted if the event is a halted subscription
+        if event_type == "subscription.halted" or sub_data.get("status") == "halted":
+            failure_type = "subscription_halted"
 
         # 7. Metadata / Notes extraction
         notes = (

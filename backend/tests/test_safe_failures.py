@@ -16,8 +16,12 @@ def test_model_unavailable_safe_fallback(client: TestClient, sample_diagnosis_pa
     Verify that when the ML model is unavailable, the system safely falls back
     without triggering automated retries and marks decision_status as FALLBACK_SAFE.
     """
-    # Create a decision engine with model_artifact_path=None (model is None)
-    degraded_engine = DecisionEngine(model_artifact_path=None)
+    from backend.app.services.diagnosis_engine import DiagnosisEngine
+    from unittest.mock import MagicMock
+
+    mock_provider = MagicMock()
+    mock_provider.get_diagnosis.side_effect = Exception("Network Down")
+    degraded_engine = DecisionEngine(diagnosis_engine=DiagnosisEngine(provider=mock_provider))
     app.dependency_overrides[get_decision_engine] = lambda: degraded_engine
     degraded_service = EventService(decision_engine=degraded_engine)
     app.dependency_overrides[get_event_service] = lambda: degraded_service

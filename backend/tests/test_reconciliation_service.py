@@ -241,7 +241,7 @@ class TestSettlementReconciliation:
         }
 
         result = recon_svc.reconcile_settlement(db_session, "payment.captured", payload)
-        assert result.status == "unmatched"
+        assert result.status == "pending_settlement"
         assert result.journey is None
 
     def test_payment_link_paid_does_not_cancel_own_settled_link(self, db_session: Session, setup_services):
@@ -405,7 +405,13 @@ class TestLiveRazorpayApiIntegration:
         key_secret = os.getenv("RAZORPAY_KEY_SECRET")
         live_flag = os.getenv("RAZORPAY_LIVE_EXECUTION", "false").lower() in ("true", "1", "yes")
 
-        if not live_flag or not key_id or not key_secret or key_id.startswith("rzp_test_recoveros123"):
+        if (
+            not live_flag
+            or not key_id
+            or not key_secret
+            or key_id.startswith("rzp_test_recoveros123")
+            or key_id.startswith("rzp_test_placeholder")
+        ):
             pytest.skip("Skipping live Razorpay API test: Live credentials not configured.")
 
         client = RazorpayTestClient(
@@ -450,7 +456,13 @@ class TestLiveRazorpayApiIntegration:
         key_secret = os.getenv("RAZORPAY_KEY_SECRET")
         live_flag = os.getenv("RAZORPAY_LIVE_EXECUTION", "false").lower() in ("true", "1", "yes")
 
-        if not live_flag or not key_id or not key_secret or key_id.startswith("rzp_test_recoveros123"):
+        if (
+            not live_flag
+            or not key_id
+            or not key_secret
+            or key_id.startswith("rzp_test_recoveros123")
+            or key_id.startswith("rzp_test_placeholder")
+        ):
             pytest.skip("Skipping live Razorpay hybrid test: Live credentials not configured.")
 
         client = RazorpayTestClient(

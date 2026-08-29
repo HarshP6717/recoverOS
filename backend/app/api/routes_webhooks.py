@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import time
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
@@ -22,14 +23,17 @@ from backend.app.core.dependencies import (
 )
 from backend.app.repositories.event_repository import (
     attach_recovery_event_to_webhook,
+    mark_webhook_processed,
     reserve_webhook_event_atomic,
 )
 from backend.app.schemas.recovery import WebhookProcessingResponse
 from backend.app.services.razorpay_adapter import RazorpayAdapter
 from backend.app.services.reconciliation_service import ReconciliationService
 from backend.app.services.recovery_orchestrator import RecoveryOrchestrator
+from backend.app.core.config import WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS
+from backend.app.core.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 router = APIRouter(prefix="/v1/webhooks", tags=["Webhooks Ingestion"])
 
@@ -79,9 +83,42 @@ async def handle_razorpay_webhook(
         or f"rzp_evt_{hashlib.sha256(raw_body).hexdigest()[:16]}"
     )
 
-    # 4. Filter unsupported events gracefully
+    # 4a. P1-7: Webhook replay protection — validate created_at if present.
+    # Reject webhooks whose timestamp is older than WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS.
+    # Razorpay sends created_at as a Unix epoch integer.
+    # We skip validation if the field is absent (preserve compatibility with test payloads).
+    if WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS > 0:
+        created_at = payload.get("created_at")
+        if created_at is not None:
+            try:
+                event_age_seconds = time.time() - float(created_at)
+                if event_age_seconds > WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS:
+                    logger.warning(
+                        "Rejected stale webhook: webhook_event_id=%s event_type=%s "
+                        "age_seconds=%.0f tolerance=%d",
+                        webhook_event_id,
+                        event_type,
+                        event_age_seconds,
+                        WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS,
+                    )
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=(
+                            f"Stale webhook rejected: event is {event_age_seconds:.0f}s old "
+                            f"(tolerance: {WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS}s). "
+                            f"event_id={webhook_event_id}"
+                        ),
+                    )
+            except (TypeError, ValueError):
+                # created_at is present but not parseable — ignore, don't reject
+                logger.debug(
+                    "created_at not parseable as timestamp: %r. Skipping replay check.",
+                    created_at,
+                )
+
+    # 4b. Filter unsupported events gracefully
     if not razorpay_adapter.is_supported_event(event_type):
-        logger.info(f"Ignoring unsupported event: {event_type}")
+        logger.info("Ignoring unsupported event: %s", event_type)
         return WebhookProcessingResponse(
             status="ignored_unsupported_event",
             webhook_event_id=str(webhook_event_id),
@@ -90,11 +127,12 @@ async def handle_razorpay_webhook(
             message=f"Event type '{event_type}' is not a supported recovery or settlement event.",
         )
 
-    # 5. Atomic Webhook Idempotency Check
-    # Attempts atomic reservation using DB UNIQUE constraint on webhook_event_id
+    # 5. Atomic Webhook Idempotency Check (Phase 1: RESERVED)
+    # Attempts atomic reservation using DB UNIQUE constraint on webhook_event_id.
+    # Status starts as RESERVED and is updated to PROCESSED on success (P1-1).
     is_new_event = reserve_webhook_event_atomic(db, str(webhook_event_id), event_type)
     if not is_new_event:
-        logger.info(f"Duplicate webhook delivery ignored for {webhook_event_id}")
+        logger.info("Duplicate webhook delivery ignored for %s", webhook_event_id)
         return WebhookProcessingResponse(
             status="duplicate_ignored",
             webhook_event_id=str(webhook_event_id),
@@ -111,6 +149,8 @@ async def handle_razorpay_webhook(
             payload=payload,
             webhook_event_id=str(webhook_event_id),
         )
+        # Phase 2: mark PROCESSED (P1-1)
+        mark_webhook_processed(db, str(webhook_event_id))
         return WebhookProcessingResponse(
             status="processed" if recon_result.status == "reconciled" else recon_result.status,
             event_id=str(webhook_event_id),
@@ -141,13 +181,13 @@ async def handle_razorpay_webhook(
         auto_execute=True,
     )
 
-    # Link recovery event ID to webhook reservation record
-    if orch_result.decision:
-        attach_recovery_event_to_webhook(db, str(webhook_event_id), orch_result.decision.event_id)
+    # Link recovery event ID to webhook reservation record and mark PROCESSED (P1-1)
+    recovery_event_id = orch_result.decision.event_id if orch_result.decision else None
+    mark_webhook_processed(db, str(webhook_event_id), recovery_event_id=recovery_event_id)
 
     return WebhookProcessingResponse(
         status="processed",
-        event_id=orch_result.decision.event_id if orch_result.decision else str(webhook_event_id),
+        event_id=recovery_event_id or str(webhook_event_id),
         webhook_event_id=str(webhook_event_id),
         event_type=event_type,
         decision=orch_result.decision,

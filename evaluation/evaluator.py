@@ -1,5 +1,5 @@
 """
-RecoverOS Phase 2C — Policy Evaluator.
+RecoverOS Phase 2C — Policy Evaluator (Exploratory — not used by the production DecisionEngine).
 
 Runs both DeterministicBaselinePolicy and MLExpectedValuePolicy over the
 held-out test population.

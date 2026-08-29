@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Generator
 
@@ -120,7 +121,8 @@ def sample_razorpay_webhook_payload() -> dict:
                 }
             }
         },
-        "created_at": 1700000000,
+        # Use current Unix timestamp to pass replay protection (WEBHOOK_TIMESTAMP_TOLERANCE_SECONDS)
+        "created_at": int(time.time()),
     }
 
 

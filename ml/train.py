@@ -1,5 +1,5 @@
 """
-RecoverOS Model Training Pipeline.
+RecoverOS Model Training Pipeline (Exploratory — not used by the production DecisionEngine).
 
 Trains an interpretable, calibrated Logistic Regression model to predict
 action-specific recovery probability P(recovered = 1 | features, action).

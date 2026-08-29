@@ -183,7 +183,12 @@ class RazorpayTestClient:
         # --- Offline Simulation Mode ---
         self._check_fault_injection()
 
-        safe_hash = hex(abs(hash(f"{reference_id}_{customer_id}")))[2:10]
+        # P2-2: Use hashlib.sha256 instead of hash() for deterministic IDs.
+        # Python's hash() is randomized per process (PYTHONHASHSEED), making simulation
+        # IDs non-reproducible across runs. sha256 is deterministic.
+        safe_hash = __import__('hashlib').sha256(
+            f"{reference_id}_{customer_id}".encode()
+        ).hexdigest()[:8]
         link_id = f"plink_test_{safe_hash}"
         short_url = f"https://rzp.io/i/{safe_hash}"
 
@@ -263,9 +268,13 @@ class RazorpayTestClient:
         """
         self._check_fault_injection()
 
-        safe_hash = hex(abs(hash(f"{customer_id}_{subscription_id}")))[2:10]
+        safe_hash = __import__('hashlib').sha256(
+            f"{customer_id}_{subscription_id}".encode()
+        ).hexdigest()[:8]
         session_id = f"sess_update_{safe_hash}"
-        update_url = f"https://recoveros.app/update-method/{safe_hash}"
+        # P2-2: Use localhost placeholder instead of non-existent recoveros.app domain.
+        # Label clearly as simulated so no live demo confusion arises.
+        update_url = f"http://localhost:8000/update-method/{safe_hash}  [SIMULATED]"
 
         return {
             "session_id": session_id,

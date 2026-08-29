@@ -19,9 +19,10 @@ import logging
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from backend.app.models.database import RecoveryJourneyModel
+from backend.app.models.database import RecoveryJourneyModel, PendingSettlementModel
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +96,7 @@ class JourneyService:
         if amount < 0:
             raise ValueError(f"Invalid journey amount: {amount}. Must be non-negative.")
 
-        # Check for existing journey by transaction_id
+        # Fast path: check for an existing journey by transaction_id
         existing = (
             db.query(RecoveryJourneyModel)
             .filter(RecoveryJourneyModel.transaction_id == transaction_id)
@@ -133,13 +134,64 @@ class JourneyService:
 
         try:
             db.add(journey)
+            
+            # Atomic check for pending settlement
+            pending = (
+                db.query(PendingSettlementModel)
+                .filter(PendingSettlementModel.transaction_id == transaction_id, PendingSettlementModel.status == "PENDING")
+                .first()
+            )
+            if pending:
+                logger.info(
+                    "Found pending out-of-order settlement for tx=%s. Claiming atomically and halting dunning.",
+                    transaction_id
+                )
+                pending.status = "CLAIMED"
+                pending.claimed_by_journey_id = journey_id
+                pending.claimed_at = now
+                
+                journey.status = "RECOVERED"
+                journey.termination_reason = "EARLY_SETTLEMENT"
+                journey.recovered_amount = pending.amount_inr
+                journey.net_value = journey.recovered_amount - journey.cumulative_cost
+                
             db.commit()
             db.refresh(journey)
-            logger.info(f"Created new recovery journey {journey_id} for tx {transaction_id}")
+            logger.info(
+                "Created new recovery journey",
+                extra={"journey_id": journey_id, "transaction_id": transaction_id},
+            )
             return journey
+        except IntegrityError:
+            # Concurrent worker created a journey for the same transaction_id first.
+            # The DB UNIQUE constraint on transaction_id caught the race. Roll back and
+            # re-read the record that the other worker committed.
+            db.rollback()
+            logger.info(
+                "Concurrent journey creation detected (IntegrityError). "
+                "Retrying SELECT for transaction_id=%s",
+                transaction_id,
+            )
+            existing = (
+                db.query(RecoveryJourneyModel)
+                .filter(RecoveryJourneyModel.transaction_id == transaction_id)
+                .order_by(RecoveryJourneyModel.created_at.desc())
+                .first()
+            )
+            if existing:
+                return existing
+            # Extremely unlikely: constraint violated but row not found — re-raise.
+            raise RuntimeError(
+                f"IntegrityError on journey creation for tx={transaction_id} "
+                "but no existing row found on retry."
+            )
         except Exception as e:
             db.rollback()
-            logger.error(f"Failed to create recovery journey for tx {transaction_id}: {e}")
+            logger.error(
+                "Failed to create recovery journey: %s",
+                e,
+                extra={"transaction_id": transaction_id},
+            )
             raise
 
     def get_journey(self, db: Session, journey_id: str) -> Optional[RecoveryJourneyModel]:
@@ -260,8 +312,12 @@ class JourneyService:
         recovered_amount: Optional[float] = None,
     ) -> RecoveryJourneyModel:
         """
-        Transitions journey to RECOVERED (idempotent).
+        Transitions journey to RECOVERED (idempotent for IN_PROGRESS).
         Records recovered amount and recalculates net value.
+
+        This method only accepts IN_PROGRESS (or already-RECOVERED) journeys.
+        For EXHAUSTED late settlements, use mark_recovered_from_exhausted().
+        STOPPED and ESCALATED journeys must NOT be overridden here.
 
         Raises
         ------
@@ -297,11 +353,82 @@ class JourneyService:
         try:
             db.commit()
             db.refresh(journey)
-            logger.info(f"Journey {journey_id} marked RECOVERED (Net Value: ₹{journey.net_value:,.2f})")
+            logger.info(
+                "Journey marked RECOVERED (Net Value: ₹%.2f)",
+                journey.net_value,
+                extra={"journey_id": journey_id},
+            )
             return journey
         except Exception as e:
             db.rollback()
-            logger.error(f"Failed to mark journey {journey_id} as recovered: {e}")
+            logger.error(
+                "Failed to mark journey as recovered: %s",
+                e,
+                extra={"journey_id": journey_id},
+            )
+            raise
+
+    def mark_recovered_from_exhausted(
+        self,
+        db: Session,
+        journey_id: str,
+        recovered_amount: float,
+    ) -> RecoveryJourneyModel:
+        """
+        Accepts a legitimate late payment on an EXHAUSTED journey.
+
+        This is the canonical recovery path for EXHAUSTED journeys (P1-8):
+        - EXHAUSTED is a policy exhaustion, not a manual decision.
+        - A customer paying after exhaustion is a legitimate settlement.
+        - STOPPED and ESCALATED journeys are explicitly NOT accepted here;
+          they require manual human review.
+
+        Raises
+        ------
+        ValueError
+            If journey is not EXHAUSTED or amount is invalid.
+        """
+        journey = self.get_journey(db, journey_id)
+        if not journey:
+            raise ValueError(f"Recovery journey '{journey_id}' not found.")
+
+        if journey.status == "RECOVERED":
+            return journey  # already recovered, idempotent
+
+        if journey.status != "EXHAUSTED":
+            raise ValueError(
+                f"mark_recovered_from_exhausted only accepts EXHAUSTED journeys. "
+                f"Got status '{journey.status}' for journey {journey_id}."
+            )
+
+        if recovered_amount <= 0:
+            raise ValueError(f"Recovered amount must be positive: {recovered_amount}")
+
+        now = datetime.now(timezone.utc)
+
+        journey.status = "RECOVERED"
+        journey.termination_reason = "LATE_SETTLEMENT_AFTER_EXHAUSTION"
+        journey.recovered_amount = float(recovered_amount)
+        journey.net_value = journey.recovered_amount - journey.cumulative_cost
+        journey.updated_at = now
+
+        try:
+            db.commit()
+            db.refresh(journey)
+            logger.info(
+                "Journey (previously EXHAUSTED) marked RECOVERED via late settlement "
+                "(Net Value: ₹%.2f)",
+                journey.net_value,
+                extra={"journey_id": journey_id},
+            )
+            return journey
+        except Exception as e:
+            db.rollback()
+            logger.error(
+                "Failed to mark exhausted journey as recovered: %s",
+                e,
+                extra={"journey_id": journey_id},
+            )
             raise
 
     def mark_stopped(self, db: Session, journey_id: str) -> RecoveryJourneyModel:
