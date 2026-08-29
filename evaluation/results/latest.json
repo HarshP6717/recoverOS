@@ -1,6 +1,6 @@
 {
   "benchmark_metadata": {
-    "timestamp": "2026-08-29T19:17:07.795312+00:00",
+    "timestamp": "2026-08-29T19:54:11.145956+00:00",
     "scenarios": 1000,
     "seed": 42,
     "evaluation_type": "Deterministic synthetic evaluation",
@@ -49,11 +49,11 @@
     "friction_saved": -3082.0
   },
   "per_category_results": {
-    "fraud_suspected": {
-      "count": 50,
-      "baseline_net_value": 15863.52,
-      "recoveros_net_value": 30838.019999999997,
-      "delta": 14974.499999999996
+    "hard_decline": {
+      "count": 160,
+      "baseline_net_value": -363.0,
+      "recoveros_net_value": 122114.74999999999,
+      "delta": 122477.74999999999
     },
     "insufficient_funds": {
       "count": 503,
@@ -61,11 +61,11 @@
       "recoveros_net_value": 442509.9899999999,
       "delta": 368993.8999999999
     },
-    "hard_decline": {
-      "count": 160,
-      "baseline_net_value": -363.0,
-      "recoveros_net_value": 122114.74999999999,
-      "delta": 122477.74999999999
+    "fraud_suspected": {
+      "count": 50,
+      "baseline_net_value": 15863.52,
+      "recoveros_net_value": 30838.019999999997,
+      "delta": 14974.499999999996
     },
     "bank_timeout": {
       "count": 287,

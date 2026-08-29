@@ -58,7 +58,7 @@ RecoverOS explicitly separates live gateway actions from recommendation-only and
 - **Recommendation-Only Capability:** `payment_method_update` (generates customer update session URL and guidance; public Razorpay sandbox does not offer a direct mandate replacement session endpoint, so RecoverOS treats it as an actionable recommendation).
 - **Internal / Queue Simulation:** `retry_now` (immediate re-auth simulation), `retry_later` (delayed queue scheduling), `send_reminder` (notification dispatch), and `escalate_human` (CRM concierge dispatch).
 
-See [RAZORPAY_ACTION_CAPABILITY_MATRIX.md](RAZORPAY_ACTION_CAPABILITY_MATRIX.md) for the complete classification matrix and [LIVE_MODE.md](LIVE_MODE.md) for live execution instructions.
+See [ARCHITECTURE.md](ARCHITECTURE.md) (Section 5) for the complete classification matrix and [LIVE_MODE.md](LIVE_MODE.md) for live execution instructions.
 
 ## 📊 Benchmark Credibility (Deterministic Synthetic Evaluation)
 
@@ -75,8 +75,9 @@ RecoverOS includes a **Deterministic Synthetic Evaluation** (`python backend/scr
 
 ## 🛡️ Engineering Documentation
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) - Deep dive into orchestrator, idempotency, and AI boundary.
-- [LIVE_MODE.md](LIVE_MODE.md) - Guide and verification for live Gemini and Razorpay Test Mode APIs.
-- [RAZORPAY_ACTION_CAPABILITY_MATRIX.md](RAZORPAY_ACTION_CAPABILITY_MATRIX.md) - Honest classification of all 7 recovery actions.
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Deep dive into orchestrator, idempotency, AI boundary, and Razorpay capabilities.
 - [DECISIONS.md](DECISIONS.md) - Architectural Decision Records (ADRs) explaining key engineering choices.
-- [FINAL_ENGINEERING_REVIEW.md](FINAL_ENGINEERING_REVIEW.md) - Pre-emptive answers to 20 critical adversarial engineering questions.
+- [DEMO.md](DEMO.md) - Exact step-by-step golden demo and Merchant UI walkthrough guide.
+- [FAQ.md](FAQ.md) - Technical and architectural deep-dive Q&A.
+- [LIVE_MODE.md](LIVE_MODE.md) - Guide and verification for live Gemini and Razorpay Test Mode APIs.
+- [PITCH.md](PITCH.md) - 5-minute final pitch presentation script.
