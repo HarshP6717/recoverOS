@@ -6,6 +6,7 @@ This guide walks you through executing the RecoverOS Golden Demo, which proves t
 
 1. Ensure the Python backend dependencies are installed (`pip install -r requirements.txt`).
 2. Ensure the frontend Node dependencies are installed (`cd frontend && npm install`).
+3. Run `python backend/scripts/reset_demo_data.py` before every live demo/judge walkthrough to start from a clean, fully-audited dataset.
 
 ## Step 1: Start the Backend Control Plane
 

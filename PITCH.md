@@ -41,7 +41,7 @@ I am going to fire a simulated `payment.failed` webhook for an 'expired_card'."
 "Watch the terminal. 
 1. The AI instantly bounded the unstructured error into a strict JSON schema. 
 2. It evaluated our candidate actions. A silent retry has a 10% chance of success (ERV: ₹95). A Payment Link has a 85% chance of success. Factoring in the SMS cost and friction, the Payment Link ERV is ₹843. 
-3. The deterministic engine selects the Payment Link and generates a real Razorpay Test Mode link.
+3. The deterministic engine selects the Payment Link and generates a Payment Link (mock/simulated by default, live Razorpay Test Mode when RAZORPAY_LIVE_EXECUTION=true is configured).
 4. It calculates our Counterfactual Advantage: we just saved ₹748 over the baseline.
 
 Now, we simulate the customer paying the link. The Razorpay `payment_link.paid` webhook arrives, we atomically reconcile it, and the journey is successfully closed."

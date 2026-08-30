@@ -86,6 +86,7 @@ class JourneyDetailResponse(BaseModel):
     # Execution & Safety
     latest_execution_status: Optional[str] = None
     cancellation_pending: Optional[bool] = None
+    is_live_execution: Optional[bool] = None
 
 
 class TimelineEvent(BaseModel):

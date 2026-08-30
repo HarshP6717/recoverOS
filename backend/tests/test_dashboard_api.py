@@ -190,7 +190,7 @@ def test_7_timeline_ordering(db_session):
     # First is event, second is execution
     assert data["events"][0]["event_type"] == "recovery_decision"
     assert data["events"][1]["event_type"] == "action_execution"
-    assert data["events"][1]["is_live"] is True
+    assert data["events"][1]["is_live"] is False
 
 def test_8_counterfactual_serialization(db_session):
     j = create_journey(db_session)
@@ -266,3 +266,23 @@ def test_15_dashboard_endpoints_cannot_mutate(db_session):
     assert r.status_code == 405
     r = client.delete("/v1/dashboard/journeys/jrn_123")
     assert r.status_code == 405
+
+def test_16_live_execution_flag_false_by_default(db_session):
+    j = create_journey(db_session)
+    e = create_event(db_session, j, selected_action="recovery_link")
+    create_execution(db_session, j, e.event_id, selected_action="recovery_link")
+    
+    # Detail check
+    r = client.get(f"/v1/dashboard/journeys/{j.journey_id}")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["is_live_execution"] is False
+    
+    # Timeline check
+    r_tl = client.get(f"/v1/dashboard/journeys/{j.journey_id}/timeline")
+    assert r_tl.status_code == 200
+    tl_data = r_tl.json()
+    exec_events = [ev for ev in tl_data["events"] if ev["event_type"] == "action_execution"]
+    assert len(exec_events) == 1
+    assert exec_events[0]["is_live"] is False
+

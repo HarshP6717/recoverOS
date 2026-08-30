@@ -92,6 +92,7 @@ export interface JourneyDetailResponse {
   
   latest_execution_status: string | null;
   cancellation_pending: boolean | null;
+  is_live_execution: boolean | null;
 }
 
 export interface TimelineEvent {

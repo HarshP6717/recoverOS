@@ -145,6 +145,7 @@ export default function CommandCenter() {
             {data.execution_unknown_count}
             {data.execution_unknown_count > 0 && <AlertCircle className="w-4 h-4 ml-2" />}
           </p>
+          <p className="text-[11px] text-slate-400 mt-1">Gateway timeout — outcome pending reconciliation</p>
         </div>
       </div>
 

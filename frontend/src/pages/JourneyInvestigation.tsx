@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { 
-  ArrowLeft, 
-  AlertTriangle, 
-  Bot, 
-  Calculator, 
-  ShieldCheck, 
-  SplitSquareHorizontal, 
+import {
+  ArrowLeft,
+  AlertTriangle,
+  Bot,
+  Calculator,
+  ShieldCheck,
+  SplitSquareHorizontal,
   PlayCircle,
   CheckCircle2,
   ListTodo
@@ -110,7 +110,7 @@ export default function JourneyInvestigation() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-20">
-      
+
       <Link to="/journeys" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-700">
         <ArrowLeft className="w-4 h-4 mr-1" />
         Back to Journeys
@@ -124,8 +124,8 @@ export default function JourneyInvestigation() {
             <span className={clsx(
               "inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ring-1 ring-inset",
               detail.status === 'IN_PROGRESS' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' :
-              detail.status === 'RECOVERED' ? 'bg-green-50 text-green-700 ring-green-600/20' :
-              'bg-slate-100 text-slate-700 ring-slate-500/20'
+                detail.status === 'RECOVERED' ? 'bg-green-50 text-green-700 ring-green-600/20' :
+                  'bg-slate-100 text-slate-700 ring-slate-500/20'
             )}>
               {detail.status.replace('_', ' ')}
             </span>
@@ -139,10 +139,10 @@ export default function JourneyInvestigation() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Main Column */}
         <div className="lg:col-span-2 space-y-6">
-          
+
           {/* SECTION 1 - FAILURE INFO */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <SectionHeader title="Payment Failure" subtitle="Originating incident context" icon={AlertTriangle} />
@@ -168,10 +168,10 @@ export default function JourneyInvestigation() {
 
           {/* SECTION 2 - AI DIAGNOSIS */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 relative overflow-hidden">
-            <SectionHeader 
-              title="AI Failure Diagnosis" 
-              subtitle="Semantic Analysis & Probability Estimation (Advisory Only)" 
-              icon={Bot} 
+            <SectionHeader
+              title="AI Failure Diagnosis"
+              subtitle="Semantic Analysis & Probability Estimation (Advisory Only)"
+              icon={Bot}
               tag="ADVISORY"
             />
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-lg border border-slate-100 mb-4">
@@ -189,20 +189,20 @@ export default function JourneyInvestigation() {
               </div>
             </div>
             <p className="text-sm text-slate-600 leading-relaxed">
-              The AI Diagnosis Engine analyzed the failure context to estimate probability distributions across recovery interventions. 
+              The AI Diagnosis Engine analyzed the failure context to estimate probability distributions across recovery interventions.
               The AI has zero execution authority and cannot invoke Razorpay APIs directly; all downstream money-movement decisions are strictly governed by the deterministic Economic Decision Engine.
             </p>
           </div>
 
           {/* SECTION 3 - ECONOMIC DECISION */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <SectionHeader 
-              title="Economic Decision Engine" 
-              subtitle="Deterministic calculation of Expected Recovery Value (ERV)" 
-              icon={Calculator} 
+            <SectionHeader
+              title="Economic Decision Engine"
+              subtitle="Deterministic calculation of Expected Recovery Value (ERV)"
+              icon={Calculator}
               tag="INTERNAL"
             />
-            
+
             <div className="mt-4 border border-slate-200 rounded-lg overflow-hidden">
               <table className="min-w-full divide-y divide-slate-200">
                 <thead className="bg-slate-50">
@@ -257,31 +257,16 @@ export default function JourneyInvestigation() {
             <SectionHeader title="Guardrails" subtitle="Deterministic safety policies evaluated" icon={ShieldCheck} tag="INTERNAL" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
               {detail.guardrails_triggered && detail.guardrails_triggered.length > 0 ? (
-                 detail.guardrails_triggered.map((g, i) => (
+                detail.guardrails_triggered.map((g, i) => (
                   <div key={i} className="flex items-center justify-between p-3 rounded-lg border border-red-100 bg-red-50">
                     <span className="text-sm font-medium text-red-800">{g}</span>
                     <span className="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">BLOCKED</span>
                   </div>
-                 ))
+                ))
               ) : (
-                <>
-                  <div className="flex items-center justify-between p-3 rounded-lg border border-green-200 bg-green-50">
-                    <span className="text-sm font-medium text-green-800">Minimum Probability Check</span>
-                    <span className="text-[10px] font-bold text-green-700 bg-green-200 px-2 py-0.5 rounded-full">PASSED</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg border border-green-200 bg-green-50">
-                    <span className="text-sm font-medium text-green-800">Duplicate Action Check</span>
-                    <span className="text-[10px] font-bold text-green-700 bg-green-200 px-2 py-0.5 rounded-full">PASSED</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg border border-green-200 bg-green-50">
-                    <span className="text-sm font-medium text-green-800">Terminal State Check</span>
-                    <span className="text-[10px] font-bold text-green-700 bg-green-200 px-2 py-0.5 rounded-full">PASSED</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg border border-green-200 bg-green-50">
-                    <span className="text-sm font-medium text-green-800">Positive ERV Check</span>
-                    <span className="text-[10px] font-bold text-green-700 bg-green-200 px-2 py-0.5 rounded-full">PASSED</span>
-                  </div>
-                </>
+                <div className="text-sm text-slate-500 p-3 col-span-full">
+                  No guardrails were triggered — the selected action was approved on Expected Recovery Value (ERV) alone.
+                </div>
               )}
             </div>
           </div>
@@ -289,13 +274,13 @@ export default function JourneyInvestigation() {
           {/* SECTION 5 - COUNTERFACTUAL ADVANTAGE */}
           {detail.counterfactual && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <SectionHeader 
-                title="Counterfactual Advantage" 
-                subtitle="Quantified economic benefit compared to the next-best allowed action" 
-                icon={SplitSquareHorizontal} 
+              <SectionHeader
+                title="Counterfactual Advantage"
+                subtitle="Quantified economic benefit compared to the next-best allowed action"
+                icon={SplitSquareHorizontal}
                 tag="VERIFIED PROOF"
               />
-              
+
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-blue-50/70 rounded-xl p-5 border border-blue-200">
                   <div className="flex justify-between items-start">
@@ -314,7 +299,7 @@ export default function JourneyInvestigation() {
                     <span className="text-lg font-bold text-blue-700">{formatCurrency(detail.counterfactual.selected_erv)}</span>
                   </div>
                 </div>
-                
+
                 <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
                   <div className="flex justify-between items-start">
                     <div>
@@ -352,7 +337,7 @@ export default function JourneyInvestigation() {
           {/* SECTION 6 & 7 - EXECUTION & SETTLEMENT */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <SectionHeader title="Execution & Reconciliation" subtitle="Razorpay integration layer" icon={PlayCircle} />
-            
+
             <div className="mt-4 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-lg">
                 <div>
@@ -361,8 +346,10 @@ export default function JourneyInvestigation() {
                     <span className="text-sm font-bold text-slate-900 mr-3">{detail.latest_execution_status || 'PENDING'}</span>
                     {detail.selected_action === 'payment_method_update' ? (
                       <TagRecommendation />
-                    ) : detail.selected_action === 'recovery_link' ? (
+                    ) : detail.is_live_execution ? (
                       <TagLive />
+                    ) : detail.selected_action === 'recovery_link' ? (
+                      <TagSimulated label="RECOVERY LINK (SIMULATED)" />
                     ) : detail.selected_action === 'stop' ? (
                       <TagInternal label="DUNNING HALTED" />
                     ) : (
@@ -395,7 +382,7 @@ export default function JourneyInvestigation() {
                   </div>
                 </div>
               )}
-              
+
               {detail.cancellation_pending && (
                 <div className="flex items-center justify-between p-4 bg-orange-50 border border-orange-200 rounded-lg">
                   <div>
@@ -404,7 +391,7 @@ export default function JourneyInvestigation() {
                       Cancellation enqueued for previous recovery links to prevent double-charging.
                     </p>
                   </div>
-                  <TagLive />
+                  {detail.is_live_execution ? <TagLive /> : <TagSimulated />}
                 </div>
               )}
             </div>
@@ -416,7 +403,7 @@ export default function JourneyInvestigation() {
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-24">
             <SectionHeader title="Audit Timeline" subtitle="Chronological event log" icon={ListTodo} />
-            
+
             <div className="mt-6 flow-root">
               <ul className="-mb-8">
                 {timeline.events.map((event, eventIdx) => (
@@ -429,9 +416,9 @@ export default function JourneyInvestigation() {
                         <div>
                           <span className={clsx(
                             "h-8 w-8 rounded-full flex items-center justify-center ring-4 ring-white",
-                            event.is_live ? "bg-emerald-500" : 
-                            event.event_type.includes('decision') ? "bg-slate-700" :
-                            "bg-purple-500"
+                            event.is_live ? "bg-emerald-500" :
+                              event.event_type.includes('decision') ? "bg-slate-700" :
+                                "bg-purple-500"
                           )}>
                             <div className="w-2 h-2 bg-white rounded-full"></div>
                           </span>
@@ -469,7 +456,7 @@ export default function JourneyInvestigation() {
             </div>
           </div>
         </div>
-        
+
       </div>
     </div>
   );

@@ -184,6 +184,10 @@ def get_journey_detail(db: Session, journey_id: str) -> Optional[JourneyDetailRe
         # cancellation_pending is not persisted
         response.cancellation_pending = None
         
+    response.is_live_execution = bool(
+        RAZORPAY_LIVE_EXECUTION and response.selected_action in {"recovery_link", "cancel_link"}
+    )
+        
     return response
 
 
@@ -223,8 +227,8 @@ def get_journey_timeline(db: Session, journey_id: str) -> Optional[JourneyTimeli
         .all()
     )
     for ex in action_executions:
-        # We consider payment link creation as 'LIVE' interaction in this system
-        is_live = ex.selected_action in {"recovery_link", "cancel_link"}
+        # We consider payment link creation as 'LIVE' interaction only if live execution is enabled
+        is_live = bool(RAZORPAY_LIVE_EXECUTION and ex.selected_action in {"recovery_link", "cancel_link"})
         
         events.append(
             TimelineEvent(

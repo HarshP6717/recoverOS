@@ -15,9 +15,9 @@ To enable live mode, set the following environment variables:
 | `AI_PROVIDER` | `mock` | `gemini` | Switches diagnosis engine from deterministic mock to Gemini 1.5 Flash |
 | `GEMINI_API_KEY` | `""` | `AIzaSy...` | Your Google AI Studio API key |
 | `RAZORPAY_LIVE_EXECUTION` | `false` | `true` | Enables real HTTP requests to Razorpay REST API |
-| `RAZORPAY_KEY_ID` | `rzp_test_recoveros123` | `rzp_test_...` | Genuine Razorpay Test Mode Key ID |
-| `RAZORPAY_KEY_SECRET` | `rzp_test_secret_abc456` | `...` | Genuine Razorpay Test Mode Key Secret |
-| `RAZORPAY_WEBHOOK_SECRET` | `rzp_secret_test_key_12345` | `...` | Webhook signing secret configured in Razorpay Dashboard |
+| `RAZORPAY_KEY_ID` | `rzp_test_placeholder` | `rzp_test_...` | Genuine Razorpay Test Mode Key ID |
+| `RAZORPAY_KEY_SECRET` | `changeme_key_secret` | `...` | Genuine Razorpay Test Mode Key Secret |
+| `RAZORPAY_WEBHOOK_SECRET` | `changeme_webhook_secret` | `...` | Webhook signing secret configured in Razorpay Dashboard |
 
 ---
 
