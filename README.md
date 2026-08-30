@@ -1,9 +1,14 @@
 # RecoverOS: Economic AI for Payment Recovery
 
+📹 Pitch video: [link coming soon]
+
 **RecoverOS is a Razorpay-native payment recovery control plane.** It shifts revenue recovery from blind retry automation to **economic decision-making**.
 
 Traditional recovery logic is rules-based: *If a payment fails, retry it 3 times and stop.*
 RecoverOS introduces an intelligent layer: *If a payment fails, diagnose the root cause with AI, calculate the Expected Recovery Value (ERV) of all possible interventions (accounting for direct cost and customer friction), apply deterministic guardrails, and execute the optimal action safely via Razorpay.*
+
+### Why Track 03 — AI Revenue Recovery?
+RecoverOS was engineered specifically to meet the evaluation bar of **Track 03 (AI Revenue Recovery)**: replacing dumb, fixed-cadence retries with an autonomous, economically rational recovery system. We align directly with the track's core requirements by delivering **measured recovery** (friction-adjusted Expected Recovery Value maximization), **compliant escalation** (graceful handoff to human concierges when diagnosis uncertainty is high), explicit **stopping rules** (hard caps on customer dunning fatigue and micro-amount losses), and an end-to-end **audit trail** (transparent SQLite event sourcing recording every diagnosis, guardrail evaluation, and counterfactual comparison).
 
 ---
 
@@ -73,6 +78,24 @@ RecoverOS includes a **Deterministic Synthetic Evaluation** (`python backend/scr
 
 > **Assumptions & Limitations:** This benchmark is a deterministic synthetic evaluation based on documented simulation assumptions, fixed seed 42, and synthetic cost parameters in INR (₹). It is designed for controlled algorithmic comparison and is not evidence of production Razorpay recovery performance.
 
+## 🔧 What Broke & How We Fixed It
+
+During adversarial testing, I discovered a subtle contradiction between two independent guardrail checks in `backend/app/services/guardrails.py` and `backend/app/services/decision_engine.py`.
+
+### The Defect: Guardrail Contradiction on Human Escalation
+We designed human escalation (`escalate_human`) as an essential safety valve: when AI diagnosis confidence is low (< 0.60), the system should drop automated actions and escalate to a human agent.
+
+However, the two guardrail layers disagreed on negative Expected Recovery Value (ERV) suppression:
+1. `guardrails.py` implemented Guardrail G1 to suppress non-viable actions (`ERV <= 0`), but explicitly exempted `escalate_human` (`elif erv <= 0.0 and action != "escalate_human"`) so low-confidence cases could still reach human oversight.
+2. `decision_engine.py` contained an independent secondary loop that wiped out any candidate with `predicted_erv <= 0.0` without exempting `escalate_human`.
+
+**The Failure Mode:** In adversarial scenarios with low AI confidence and modest transaction amounts (for example, invoice amount ₹200.00 where `escalate_human` direct cost is ₹30.00 and predicted ERV is -₹20.00), the AI correctly flagged `LOW_AI_CONFIDENCE`. But because the raw ERV was negative, `decision_engine.py` suppressed `escalate_human`. With all recovery actions suppressed, the engine silently selected `stop` instead of escalating to a human — the exact opposite of our intended safety behavior.
+
+### How We Fixed It
+1. **Single Source of Truth:** We made `backend/app/services/guardrails.py` the single authority for guardrail enforcement and aligned `backend/app/services/decision_engine.py` to preserve `escalate_human` as an authorized safety bypass when raw ERV is negative.
+2. **Deterministic Boundaries Kept:** We ensured Guardrail G3 remained strict: human escalation is suppressed for micro-amounts (< ₹100.00) where concierge cost cannot be justified, but permitted for amounts ≥ ₹100.00 even if predicted ERV is negative under low AI confidence.
+3. **Regression Test Lock-in:** We locked in the fix with the regression test [`test_low_ai_confidence_escalates_human_even_with_negative_erv`](backend/tests/test_guardrails.py) in `backend/tests/test_guardrails.py`, verifying that adversarial low-confidence inputs correctly output `selected_action: "escalate_human"` with `LOW_AI_CONFIDENCE` triggered and `G1_NEGATIVE_ERV` suppressed.
+
 ## 🛡️ Engineering Documentation
 
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Deep dive into orchestrator, idempotency, AI boundary, and Razorpay capabilities.
@@ -81,3 +104,8 @@ RecoverOS includes a **Deterministic Synthetic Evaluation** (`python backend/scr
 - [FAQ.md](FAQ.md) - Technical and architectural deep-dive Q&A.
 - [LIVE_MODE.md](LIVE_MODE.md) - Guide and verification for live Gemini and Razorpay Test Mode APIs.
 - [PITCH.md](PITCH.md) - 5-minute final pitch presentation script.
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
