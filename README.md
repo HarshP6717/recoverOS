@@ -92,7 +92,7 @@ However, the two guardrail layers disagreed on negative Expected Recovery Value 
 **The Failure Mode:** In adversarial scenarios with low AI confidence and modest transaction amounts (for example, invoice amount ₹200.00 where `escalate_human` direct cost is ₹30.00 and predicted ERV is -₹20.00), the AI correctly flagged `LOW_AI_CONFIDENCE`. But because the raw ERV was negative, `decision_engine.py` suppressed `escalate_human`. With all recovery actions suppressed, the engine silently selected `stop` instead of escalating to a human — the exact opposite of our intended safety behavior.
 
 ### How We Fixed It
-1.1. **Single Source of Truth:** We added the escalate_human exemption to
+1. **Single Source of Truth:** We added the escalate_human exemption to
    guardrails.py's G1 check itself (matching what decision_engine.py had
    already intended), making guardrails.py the single authority for
    guardrail enforcement.
