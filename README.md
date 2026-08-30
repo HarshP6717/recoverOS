@@ -86,8 +86,8 @@ During adversarial testing, I discovered a subtle contradiction between two inde
 We designed human escalation (`escalate_human`) as an essential safety valve: when AI diagnosis confidence is low (< 0.60), the system should drop automated actions and escalate to a human agent.
 
 However, the two guardrail layers disagreed on negative Expected Recovery Value (ERV) suppression:
-1. `guardrails.py` implemented Guardrail G1 to suppress non-viable actions (`ERV <= 0`), but explicitly exempted `escalate_human` (`elif erv <= 0.0 and action != "escalate_human"`) so low-confidence cases could still reach human oversight.
-2. `decision_engine.py` contained an independent secondary loop that wiped out any candidate with `predicted_erv <= 0.0` without exempting `escalate_human`.
+1. `decision_engine.py`'s low-confidence guardrail already exempted `escalate_human` from suppression (`ev.action not in ("stop", "escalate_human")`), intending it as an always-available human safety valve.
+2. But `guardrails.py`'s Guardrail G1 ran earlier in the pipeline and suppressed ANY action with negative ERV — including `escalate_human` — with no exemption at all. By the time decision_engine.py's exemption logic ran, escalate_human was already blocked; its own exemption never actually executed.
 
 **The Failure Mode:** In adversarial scenarios with low AI confidence and modest transaction amounts (for example, invoice amount ₹200.00 where `escalate_human` direct cost is ₹30.00 and predicted ERV is -₹20.00), the AI correctly flagged `LOW_AI_CONFIDENCE`. But because the raw ERV was negative, `decision_engine.py` suppressed `escalate_human`. With all recovery actions suppressed, the engine silently selected `stop` instead of escalating to a human — the exact opposite of our intended safety behavior.
 
@@ -106,7 +106,7 @@ However, the two guardrail layers disagreed on negative Expected Recovery Value 
 - [DEMO.md](DEMO.md) - Exact step-by-step golden demo and Merchant UI walkthrough guide.
 - [FAQ.md](FAQ.md) - Technical and architectural deep-dive Q&A.
 - [LIVE_MODE.md](LIVE_MODE.md) - Guide and verification for live Gemini and Razorpay Test Mode APIs.
-- [PITCH.md](PITCH.md) - 5-minute final pitch presentation script.
+
 
 ## 📄 License
 
