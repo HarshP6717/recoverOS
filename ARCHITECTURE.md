@@ -4,6 +4,25 @@ RecoverOS is a **Razorpay-native payment recovery control plane** that transform
 
 It operates as a deterministic state machine that uses AI strictly as an unprivileged diagnosis engine, combining continuous Expected Recovery Value (ERV) optimization with deterministic safety guardrails and closed-loop Razorpay reconciliation.
 
+## System Flow
+
+```mermaid
+flowchart LR
+    A[Payment Failure<br/>Webhook ingests failed txn] --> B[AI Diagnosis<br/>Advisory only — zero execution authority]
+    B --> C[Expected Value<br/>ERV = P_pred × Amount − Cost − Friction]
+    C --> D{Guardrails<br/>G1–G6 + Low-Confidence check}
+    D -->|Blocked| E[Next-best allowed action<br/>re-evaluated]
+    D -->|Passed| F[Bounded Action<br/>Highest-ERV permitted action selected]
+    E --> F
+    F --> G[Razorpay APIs<br/>Payment Links, Retries]
+    F --> H[Human Escalation<br/>if AI confidence < 60%]
+    G --> I[Reconciliation<br/>Settlement matched, double-charge safe]
+    H --> I
+
+    style D fill:#fff3cd,stroke:#856404
+    style H fill:#f8d7da,stroke:#721c24
+```
+
 ---
 
 ## 1. Core Architectural Tenets
